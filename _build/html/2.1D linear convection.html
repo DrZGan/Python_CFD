@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 1: 1-D Linear Convection &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2.1D linear convection';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 2: Nonlinear Convection" href="3.Nonlinear%20convection.html" />
+    <link rel="prev" title="Python Crash Course" href="1.Python%20Numpy.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/ZGAN.jpg" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/ZGAN.jpg" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.Python%20Numpy.html">Python Crash Course</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 1: 1-D Linear Convection</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F2.1D linear convection.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/2.1D linear convection.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 1: 1-D Linear Convection</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: 1-D Linear Convection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes">Accuray of finite difference schemes</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p>Hello! Welcome to the practical module that is used in the beginning of an interactive Computational Fluid Dynamics (CFD) course. The course assumes only basic programming knowledge (in any language) and of course some foundation in partial differential equations and fluid mechanics. The course is taught entirely using Python and students who don’t know Python just learn as we work through the module.</p>
+<p>This Jupyter notebook will lead you through the first step of programming your own Navier–Stokes solver in Python from the ground up. We’re going to dive right in. Don’t worry if you don’t understand everything that’s happening at first, we’ll cover it in detail as we move forward and you can support your learning.</p>
+<p>For best results, after you follow this notebook, prepare your own code, either as a Python script or in a clean Jupyter notebook.</p>
+<p>To execute this Notebook, we assume you have invoked the notebook server using: jupyter notebook.</p>
+<section id="step-1-1-d-linear-convection">
+<h1>Step 1: 1-D Linear Convection<a class="headerlink" href="#step-1-1-d-linear-convection" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<p>The 1-D Linear Convection equation is the simplest, most basic model that can be used to learn something about CFD. It is surprising that this little equation can teach us so much! Here it is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t} + c \frac{\partial u}{\partial x} = 0\]</div>
+<p>With given initial conditions (understood as a <em>wave</em>), the equation represents the propagation of that initial <em>wave</em> with speed <span class="math notranslate nohighlight">\(c\)</span>, without change of shape. Let the initial condition be <span class="math notranslate nohighlight">\(u(x,0)=u_0(x)\)</span>. Then the exact solution of the equation is <span class="math notranslate nohighlight">\(u(x,t)=u_0(x-ct)\)</span>.</p>
+<p>We discretize this equation in both space and time, using the Forward Difference scheme for the time derivative and the Backward Difference scheme for the space derivative. Consider discretizing the spatial coordinate <span class="math notranslate nohighlight">\(x\)</span> into points that we index from <span class="math notranslate nohighlight">\(i=0\)</span> to <span class="math notranslate nohighlight">\(N\)</span>, and stepping in discrete time intervals of size <span class="math notranslate nohighlight">\(\Delta t\)</span>.</p>
+<p>From the definition of a derivative (and simply removing the limit), we know that:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial x}\approx \frac{u(x+\Delta x)-u(x)}{\Delta x}\]</div>
+<p>Our discrete equation, then, is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{u_i^{n+1}-u_i^n}{\Delta t} + c \frac{u_i^n - u_{i-1}^n}{\Delta x} = 0 \]</div>
+<p>Where <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(n+1\)</span> are two consecutive steps in time, while <span class="math notranslate nohighlight">\(i-1\)</span> and <span class="math notranslate nohighlight">\(i\)</span> are two neighboring points of the discretized <span class="math notranslate nohighlight">\(x\)</span> coordinate. If there are given initial conditions, then the only unknown in this discretization is <span class="math notranslate nohighlight">\(u_i^{n+1}\)</span>.  We can solve for our unknown to get an equation that allows us to advance in time, as follows:</p>
+<div class="math notranslate nohighlight">
+\[u_i^{n+1} = u_i^n - c \frac{\Delta t}{\Delta x}(u_i^n-u_{i-1}^n)\]</div>
+<p>Now let’s try implementing this in Python.</p>
+<p>We’ll start by importing a few libraries to help us out.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code> is a library that provides a bunch of useful matrix operations akin to MATLAB</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> is a 2D plotting library that we will use to plot our results</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">sys</span></code> provide basic timing functions that we’ll use to slow down animations for viewing</p></li>
+</ul>
+<p><strong>It is a conservative discretization scheme, discreitized from the conservative form of the equation.</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remember: comments in python are denoted by the pound sign</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>                 <span class="c1">#here we load numpy and create a shortcut np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>      <span class="c1">#here we load matplotlib</span>
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span>                   <span class="c1">#and load some utilities</span>
+
+<span class="c1">#this makes matplotlib plots appear in the notebook (instead of a separate window)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline    
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s define a few variables; we want to define an evenly spaced grid of points within a spatial domain that is 2 units of length wide, i.e., <span class="math notranslate nohighlight">\(x_i\in(0,2)\)</span>.  We’ll define a variable <code class="docutils literal notranslate"><span class="pre">nx</span></code>, which will be the number of grid points we want and <code class="docutils literal notranslate"><span class="pre">dx</span></code> will be the distance between any pair of adjacent grid points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span> <span class="o">=</span> <span class="mi">81</span> <span class="c1"># try changing this number from 41 to 81 and Run All... What happens?</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># delta x</span>
+<span class="n">dx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.025
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nt</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c1">#nt is the number of timesteps we want to calculate</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.025</span>  <span class="c1">#dt is the number of time that each timestep covers (delta t)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>     <span class="c1">#assumewavespeed of c = 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also need to set up our initial conditions. The initial velocity <span class="math notranslate nohighlight">\(u_0\)</span> is given as
+<span class="math notranslate nohighlight">\(u = 2\)</span> in the interval <span class="math notranslate nohighlight">\(0.5 \leq x \leq 1\)</span>  and <span class="math notranslate nohighlight">\(u = 1\)</span> everywhere else in <span class="math notranslate nohighlight">\((0,2)\)</span> (i.e., a hat function).</p>
+<p>Here, we use the function <code class="docutils literal notranslate"><span class="pre">ones()</span></code> defining a <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array which is <code class="docutils literal notranslate"><span class="pre">nx</span></code> elements long with every value equal to 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span>      <span class="c1">#numpy function ones()</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">.5</span> <span class="o">/</span> <span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1">#setting u = 2 between 0.5 and 1 as per our I.C.s</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="c1">#print(np.linspace(0, 2, nx))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 2. 2. 2. 2.
+ 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 1. 1. 1. 1. 1. 1. 1.
+ 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+ 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span><span class="p">(</span><span class="mf">3.9</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># int() truncates the decimal part</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s take a look at those initial conditions using a Matplotlib plot.  We’ve imported the <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> plotting library <code class="docutils literal notranslate"><span class="pre">pyplot</span></code> and the plotting function is called <code class="docutils literal notranslate"><span class="pre">plot</span></code>, so we’ll call <code class="docutils literal notranslate"><span class="pre">pyplot.plot</span></code>. To learn about the myriad possibilities of Matplotlib, explore the <a class="reference external" href="http://matplotlib.org/gallery.html">Gallery</a> of example plots.</p>
+<p>Here, we use the syntax for a simple 2D plot: <code class="docutils literal notranslate"><span class="pre">plot(x,y)</span></code>, where the <code class="docutils literal notranslate"><span class="pre">x</span></code> values are evenly distributed grid points:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5fc1db431ffefd569c41449c69a43a1395e00c959df0ef63add7a5695e72ad73.png" src="_images/5fc1db431ffefd569c41449c69a43a1395e00c959df0ef63add7a5695e72ad73.png" />
+</div>
+</div>
+<p>Why doesn’t the hat function have perfectly straight sides? Think for a bit.</p>
+<p>Now it’s time to implement the discretization of the convection equation using a finite-difference scheme.</p>
+<p>For every element of our array <code class="docutils literal notranslate"><span class="pre">u</span></code>, we need to perform the operation <span class="math notranslate nohighlight">\(u_i^{n+1} = u_i^n - c \frac{\Delta t}{\Delta x}(u_i^n-u_{i-1}^n)\)</span></p>
+<p>We’ll store the result in a new (temporary) array <code class="docutils literal notranslate"><span class="pre">un</span></code>, which will be the solution <span class="math notranslate nohighlight">\(u\)</span> for the next time-step.  We will repeat this operation for as many time-steps as we specify and then we can see how far the wave has convected.</p>
+<p>We first initialize our placeholder array <code class="docutils literal notranslate"><span class="pre">un</span></code> to hold the values we calculate for the <span class="math notranslate nohighlight">\(n+1\)</span> timestep, using once again the NumPy function <code class="docutils literal notranslate"><span class="pre">ones()</span></code>.</p>
+<p>Then, we may think we have two iterative operations: one in space and one in time (we’ll learn differently later), so we’ll start by nesting one loop inside the other. Note the use of the nifty <code class="docutils literal notranslate"><span class="pre">range()</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">un</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span> <span class="c1"># initialize a temporary array</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span> <span class="c1"># loop n from 0 to nt-1, so it will run nt times</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># copy the existing values of u into un</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">):</span> <span class="c1"># change the range to 0 to nx, and see what happens</span>
+        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we write: <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(1,nx)</span></code> we will iterate through the <code class="docutils literal notranslate"><span class="pre">u</span></code> array, but we’ll be skipping the first element (the zero-th element).  <em>Why?</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6ad3ac9be6e743a17ba231312642638e84b6b3ffb26842e7691f21faace1f57a.png" src="_images/6ad3ac9be6e743a17ba231312642638e84b6b3ffb26842e7691f21faace1f57a.png" />
+</div>
+</div>
+<p>OK! So our hat function has definitely moved to the right (its center from 0.75 to 1.25), but it’s no longer a hat.  <strong>What’s going on?</strong></p>
+</section>
+<section id="accuray-of-finite-difference-schemes">
+<h1>Accuray of finite difference schemes<a class="headerlink" href="#accuray-of-finite-difference-schemes" title="Permalink to this heading">#</a></h1>
+<p>Taylor expansions:</p>
+<p><span class="math notranslate nohighlight">\(u(x+\Delta x)=u(x)+\Delta x \frac{\partial u}{\partial x}\big|_x+ \frac{\Delta x^2}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x+\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...+\frac{\Delta x^n}{n!}\frac{\partial^n u}{\partial x^n}\big|_x+...\)</span></p>
+<p><span class="math notranslate nohighlight">\(u(x-\Delta x)=u(x)-\Delta x \frac{\partial u}{\partial x}\big|_x+ \frac{\Delta x^2}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x-\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...+\frac{\Delta x^n}{n!}\frac{\partial^n u}{\partial x^n}\big|_x-...\)</span></p>
+<p>Reorganize the first Taylor expansion, we get the Forward Differencing scheme  (1st order accuracy):
+<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial x}\big|_x=\frac{u(x+\Delta x)-u(x)}{\Delta x}+\frac{\Delta x}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x+...=\frac{u(x+\Delta x)-u(x)}{\Delta x}+O(\Delta x)\)</span></p>
+<p>Reorganize the second Taylor expansion, we get the Backward Differencing scheme (1st order accuracy):
+<span class="math notranslate nohighlight">\(\frac{\partial u}{\partial x}\big|_x=\frac{u(x)-u(x-\Delta x)}{\Delta x}+\frac{\Delta x}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x-...=\frac{u(x)-u(x-\Delta x)}{\Delta x}+O(\Delta x)\)</span></p>
+<p>Substract the second one from the first one, we get the Central Differencing scheme (2nd order accuracy):
+<span class="math notranslate nohighlight">\(u(x+\Delta x)-u(x-\Delta x)=2\frac{\partial u}{\partial x}\big|_x+2\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...\)</span></p>
+<p><span class="math notranslate nohighlight">\(\frac{\partial u}{\partial x}\big|_x=\frac{u(x+\Delta x)-u(x-\Delta x)}{2\Delta x}+2\frac{\Delta x^2}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...=\frac{u(x+\Delta x)-u(x-\Delta x)}{2\Delta x}+O(\Delta x^2)\)</span></p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1.Python%20Numpy.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Python Crash Course</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3.Nonlinear%20convection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 2: Nonlinear Convection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: 1-D Linear Convection</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes">Accuray of finite difference schemes</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
