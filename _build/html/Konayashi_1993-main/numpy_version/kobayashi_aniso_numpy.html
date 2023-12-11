@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>&lt;no title&gt; &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Konayashi_1993-main/numpy_version/kobayashi_aniso_numpy';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="../../_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FKonayashi_1993-main/numpy_version/kobayashi_aniso_numpy.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Konayashi_1993-main/numpy_version/kobayashi_aniso_numpy.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">yaml_parse</span><span class="p">(</span><span class="n">yaml_filepath</span><span class="p">):</span>     
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YAML parameters:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">args</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">case_name</span> <span class="o">=</span> <span class="s1">&#39;ice&#39;</span>
+<span class="n">work_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="n">case_path</span> <span class="o">=</span> <span class="n">work_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">case_name</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">case_path</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">case_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory &#39;</span><span class="si">{</span><span class="n">case_name</span><span class="si">}</span><span class="s2">&#39; created at work_path.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory &#39;</span><span class="si">{</span><span class="n">case_name</span><span class="si">}</span><span class="s2">&#39; already exists at work_path.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">case_path</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">case_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            
+<span class="n">args</span> <span class="o">=</span> <span class="n">yaml_parse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.yaml&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">case_name</span><span class="p">)))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Directory &#39;ice&#39; already exists at work_path.
+YAML parameters:
+J: 6
+K: 1.2
+T_eq: 1.0
+a: 0.01
+alpha: 0.9
+delta: 0.04
+dt: 0.0002
+eps_bar: 0.01
+gamma: 10.0
+hx: 0.03
+hy: 0.03
+nx: 500
+ny: 500
+t_OFF: 0.28
+tou: 0.0003
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span>
+<span class="n">t_OFF</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;t_OFF&#39;</span><span class="p">]</span>
+<span class="n">hx</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hx&#39;</span><span class="p">]</span>
+<span class="n">hy</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hy&#39;</span><span class="p">]</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">]</span>
+<span class="n">tou</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tou&#39;</span><span class="p">]</span>
+<span class="n">T_eq</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;T_eq&#39;</span><span class="p">]</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">]</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span>
+<span class="n">eps_bar</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;eps_bar&#39;</span><span class="p">]</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">nIter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_OFF</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initializing</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps_der</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps2_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps2_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+
+<span class="sd">&#39;&#39;&#39;circle&#39;&#39;&#39;</span>
+<span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">mask</span> <span class="o">=</span>  <span class="p">((</span><span class="n">i</span> <span class="o">-</span> <span class="n">nx</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">ny</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">20.</span>
+<span class="n">p</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="sd">&#39;&#39;&#39;hexagon&#39;&#39;&#39;</span>
+<span class="c1"># x0, y0, L = nx//2, ny//2, 10</span>
+<span class="c1"># lk = -1 / np.sqrt(3)</span>
+<span class="c1"># b0 = y0-L+x0/np.sqrt(3)</span>
+<span class="c1"># b1 = L+y0+x0/np.sqrt(3)</span>
+<span class="c1"># b2 = y0-L-x0/np.sqrt(3)</span>
+<span class="c1"># b3 = y0+L-x0/np.sqrt(3)</span>
+<span class="c1"># for i in range(nx):</span>
+<span class="c1">#     for j in range(ny):</span>
+<span class="c1">#         if i&gt;=x0-L and i&lt;=x0+L and j&lt;=b1+lk*i and j&gt;=b2-lk*i and j&lt;=b3-lk*i and j&gt;=b0+lk*i:</span>
+<span class="c1">#             p[i,j] = 1.</span>
+            
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ae9f1165b3dcfea1a619cc42a791631df7020fad121dc49fdc1fe7490cb7101b.png" src="../../_images/ae9f1165b3dcfea1a619cc42a791631df7020fad121dc49fdc1fe7490cb7101b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="n">m_neg_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_pos_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">m</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_neg_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m_pos_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">f_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_pos_x</span> <span class="o">-</span> <span class="n">m_neg_x</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span><span class="n">dx</span>
+    <span class="n">f_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_pos_y</span> <span class="o">-</span> <span class="n">m_neg_y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span><span class="n">dy</span>
+    <span class="k">return</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">f_y</span>
+
+<span class="k">def</span> <span class="nf">laplace</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">):</span>
+    <span class="n">m_neg_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_pos_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">m</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_neg_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m_pos_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">m_neg_x</span> <span class="o">+</span> <span class="n">m_pos_x</span> <span class="o">-</span> <span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="n">hx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">m_neg_y</span> <span class="o">+</span> <span class="n">m_pos_y</span> <span class="o">-</span> <span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="n">hy</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_theta</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">f_y</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.5</span><span class="o">*</span><span class="n">pi</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">.5</span><span class="o">*</span><span class="n">pi</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">/</span><span class="n">f_x</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">/</span><span class="n">f_x</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">/</span><span class="n">f_x</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">theta</span>
+
+<span class="k">def</span> <span class="nf">get_eps</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">eps_bar</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">delta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">J</span><span class="o">*</span><span class="n">angle</span><span class="p">)),</span> <span class="o">-</span><span class="n">eps_bar</span><span class="o">*</span><span class="n">J</span><span class="o">*</span><span class="n">delta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">J</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">phase_field</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_der</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>    
+    <span class="n">part1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">*</span><span class="n">eps_der</span><span class="o">*</span><span class="n">p_y</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">part2</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">*</span><span class="n">eps_der</span><span class="o">*</span><span class="n">p_x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">part3</span> <span class="o">=</span> <span class="n">eps2_x</span><span class="o">*</span><span class="n">p_x</span> <span class="o">+</span> <span class="n">eps2_y</span><span class="o">*</span><span class="n">p_y</span>
+    
+    <span class="n">m</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">gamma</span><span class="o">*</span><span class="p">(</span><span class="n">T_eq</span><span class="o">-</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">part1</span><span class="o">+</span><span class="n">part2</span><span class="o">+</span><span class="n">part3</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">laplace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+    
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">dt</span><span class="o">/</span><span class="n">tou</span><span class="o">*</span><span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">p_new</span><span class="o">+</span><span class="n">noise</span><span class="p">,</span> <span class="n">p_new</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_field</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d_eta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">T</span> <span class="o">+</span> <span class="n">dt</span><span class="o">*</span><span class="n">laplace</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">hx</span><span class="p">,</span><span class="n">hy</span><span class="p">)</span> <span class="o">+</span> <span class="n">K</span><span class="o">*</span><span class="n">d_eta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">zero_flux</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
+    <span class="n">arr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,:]</span>
+    <span class="n">arr</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">arr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nIter</span><span class="p">):</span>
+    <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">get_theta</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">)</span>
+    <span class="n">eps</span><span class="p">,</span> <span class="n">eps_der</span> <span class="o">=</span> <span class="n">get_eps</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">eps2_x</span><span class="p">,</span> <span class="n">eps2_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+    
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">phase_field</span><span class="p">(</span><span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_der</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> 
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">zero_flux</span><span class="p">(</span><span class="n">p_new</span><span class="p">)</span>
+    <span class="n">d_p</span> <span class="o">=</span> <span class="n">p_new</span> <span class="o">-</span> <span class="n">p</span>
+    
+    <span class="n">T_new</span> <span class="o">=</span> <span class="n">T_field</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d_p</span><span class="p">)</span>
+    <span class="n">T_new</span> <span class="o">=</span> <span class="n">zero_flux</span><span class="p">(</span><span class="n">T_new</span><span class="p">)</span>
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="n">p_new</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T_new</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">case_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%f</span><span class="s2">.png&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">case_name</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">dt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/85d9c46d069b8a4db10da69fbfa95e97540557a4d64e4348d0721517ade03307.png" src="../../_images/85d9c46d069b8a4db10da69fbfa95e97540557a4d64e4348d0721517ade03307.png" />
+<img alt="../../_images/5c934743da03ce96db9e3943bab3b6f911b2ba9aa7e75729fe8f015ca718a0da.png" src="../../_images/5c934743da03ce96db9e3943bab3b6f911b2ba9aa7e75729fe8f015ca718a0da.png" />
+<img alt="../../_images/46cce864340fde77b3435c8a6b6f2c1f7857faec34ec1c6c53e42130c6dda218.png" src="../../_images/46cce864340fde77b3435c8a6b6f2c1f7857faec34ec1c6c53e42130c6dda218.png" />
+<img alt="../../_images/fd7661eaf1b0516514f92ecb42942b7e55d2b7dab4ae6493df80af84f775256a.png" src="../../_images/fd7661eaf1b0516514f92ecb42942b7e55d2b7dab4ae6493df80af84f775256a.png" />
+<img alt="../../_images/ca18a8d93735ec7d0b044ad66eb43f582b38b3b5b2e8d9eaf1380568ffc1a1b6.png" src="../../_images/ca18a8d93735ec7d0b044ad66eb43f582b38b3b5b2e8d9eaf1380568ffc1a1b6.png" />
+<img alt="../../_images/806400d39f9f814b6c938674118db879c23ab7f31550d1b6a48ab4537a28a59f.png" src="../../_images/806400d39f9f814b6c938674118db879c23ab7f31550d1b6a48ab4537a28a59f.png" />
+<img alt="../../_images/07a2eb94185e8155b8440441564077a7ad6b232d61bef6e935711c078dffb762.png" src="../../_images/07a2eb94185e8155b8440441564077a7ad6b232d61bef6e935711c078dffb762.png" />
+<img alt="../../_images/3c8802da56d86088be884602959bbe0fb5f932ee7d2c22fddddef6c30f328ff2.png" src="../../_images/3c8802da56d86088be884602959bbe0fb5f932ee7d2c22fddddef6c30f328ff2.png" />
+<img alt="../../_images/99dd1d5f1ceb0bff31bb9fdbc37df32c00c913d7c146291e7906a10ed1d19e23.png" src="../../_images/99dd1d5f1ceb0bff31bb9fdbc37df32c00c913d7c146291e7906a10ed1d19e23.png" />
+<img alt="../../_images/72ed79557122a1b77e44f8da5f050b11d07fba3fd73d72fe5d0a115069bd2f71.png" src="../../_images/72ed79557122a1b77e44f8da5f050b11d07fba3fd73d72fe5d0a115069bd2f71.png" />
+<img alt="../../_images/66c1b1a2f3d6d3cec2dcd696f1b49b6be64bb65b1d33b029f481ecb15a13562c.png" src="../../_images/66c1b1a2f3d6d3cec2dcd696f1b49b6be64bb65b1d33b029f481ecb15a13562c.png" />
+<img alt="../../_images/5b61a142c7eac51b4cc0854836cd87b34b056d48b5a12edea5413d524aaeea14.png" src="../../_images/5b61a142c7eac51b4cc0854836cd87b34b056d48b5a12edea5413d524aaeea14.png" />
+<img alt="../../_images/d26185a522f064cff6f847bb79807d901ca931963c142890625d2b81b718f1aa.png" src="../../_images/d26185a522f064cff6f847bb79807d901ca931963c142890625d2b81b718f1aa.png" />
+<img alt="../../_images/c48165ee3a8b0795f5c32d8ce68b777655604c0bceada1c1881757a11ea64238.png" src="../../_images/c48165ee3a8b0795f5c32d8ce68b777655604c0bceada1c1881757a11ea64238.png" />
+<img alt="../../_images/0ba3a6a6a59e34ea5a8c76ef84a99dd9ebe5eb6a593f39f688d6cd0852ad592e.png" src="../../_images/0ba3a6a6a59e34ea5a8c76ef84a99dd9ebe5eb6a593f39f688d6cd0852ad592e.png" />
+<img alt="../../_images/556b7a48b2bc01f32a908d9822bc4dd5bf3b10b7ff7894ddbe5ad833f98528d7.png" src="../../_images/556b7a48b2bc01f32a908d9822bc4dd5bf3b10b7ff7894ddbe5ad833f98528d7.png" />
+<img alt="../../_images/15abb1533a8d2c6f3b09224a6393198cfcbcbf4d206e11d5af7f15064108c7f4.png" src="../../_images/15abb1533a8d2c6f3b09224a6393198cfcbcbf4d206e11d5af7f15064108c7f4.png" />
+<img alt="../../_images/d4db1383906d2babc344f056b24f8e1c793aeac2e5652e8df126ecf7d12fc8e6.png" src="../../_images/d4db1383906d2babc344f056b24f8e1c793aeac2e5652e8df126ecf7d12fc8e6.png" />
+<img alt="../../_images/5c11cdf69784c86108fec3e374ab240b54d78967bb94a396de3a8adff86044b0.png" src="../../_images/5c11cdf69784c86108fec3e374ab240b54d78967bb94a396de3a8adff86044b0.png" />
+<img alt="../../_images/37dd9eb1d6544bd0bc57ce82f31028a40fb803800a8f1e0205148cb3e3d993b8.png" src="../../_images/37dd9eb1d6544bd0bc57ce82f31028a40fb803800a8f1e0205148cb3e3d993b8.png" />
+<img alt="../../_images/2b554584e816a1e24f524091e0dd6118afebdf2a4b23235c1014556015c8742d.png" src="../../_images/2b554584e816a1e24f524091e0dd6118afebdf2a4b23235c1014556015c8742d.png" />
+<img alt="../../_images/8fa3bc579b5cea97a2783b417f55ff0b8d82f1f7512668483f95111cf683ee32.png" src="../../_images/8fa3bc579b5cea97a2783b417f55ff0b8d82f1f7512668483f95111cf683ee32.png" />
+<img alt="../../_images/f13ac59baf61e55dddf4e82f8c71d369b2672bb915ed866d597f5e1bdb6e726f.png" src="../../_images/f13ac59baf61e55dddf4e82f8c71d369b2672bb915ed866d597f5e1bdb6e726f.png" />
+<img alt="../../_images/1ffe6c8f19c358f1c44f2d1909ebeb1a90e2ae329e0319ee4e537989fdaf7311.png" src="../../_images/1ffe6c8f19c358f1c44f2d1909ebeb1a90e2ae329e0319ee4e537989fdaf7311.png" />
+<img alt="../../_images/11dbf6b9fa58e79ac19035508e3dcf05c6ea414adaf5f5745b6a73704f992446.png" src="../../_images/11dbf6b9fa58e79ac19035508e3dcf05c6ea414adaf5f5745b6a73704f992446.png" />
+<img alt="../../_images/0ba770dff18a3a5b807ac760c51890f6e1c7bfa402f20afb39f32c7b8042206a.png" src="../../_images/0ba770dff18a3a5b807ac760c51890f6e1c7bfa402f20afb39f32c7b8042206a.png" />
+<img alt="../../_images/0902c10279b8e7cb50b5fb69ecd97136673ebc43343873c5283914dcc7a3db93.png" src="../../_images/0902c10279b8e7cb50b5fb69ecd97136673ebc43343873c5283914dcc7a3db93.png" />
+<img alt="../../_images/7f53319d747611c398e957440670d550aa8cb447c98e4a1619faa1363a5bd27f.png" src="../../_images/7f53319d747611c398e957440670d550aa8cb447c98e4a1619faa1363a5bd27f.png" />
+<img alt="../../_images/dd84651c577b664136f678ec2952034b65c17f187becf606e6dada27a126345f.png" src="../../_images/dd84651c577b664136f678ec2952034b65c17f187becf606e6dada27a126345f.png" />
+<img alt="../../_images/96d3ca113c380618a65409c714c2b8cb07ddd49a35c24e289e343ac61899cc31.png" src="../../_images/96d3ca113c380618a65409c714c2b8cb07ddd49a35c24e289e343ac61899cc31.png" />
+<img alt="../../_images/7f545abf9a13eddc6971db1c51807892b975dcecf6147fd5ddfe9879ec123d2f.png" src="../../_images/7f545abf9a13eddc6971db1c51807892b975dcecf6147fd5ddfe9879ec123d2f.png" />
+<img alt="../../_images/91908ec122c7e0e3afcc505d44dd1b915ad5916ff776c039342d353f3fbf6398.png" src="../../_images/91908ec122c7e0e3afcc505d44dd1b915ad5916ff776c039342d353f3fbf6398.png" />
+<img alt="../../_images/626a2fe6d80fc750d18de1c2c928ff6a1642365c5cf1034105875cdc7d9a3f0b.png" src="../../_images/626a2fe6d80fc750d18de1c2c928ff6a1642365c5cf1034105875cdc7d9a3f0b.png" />
+<img alt="../../_images/b29218ff9286775cb5a180930bb1f5029df2e991bfbd84f973832699c36fe84b.png" src="../../_images/b29218ff9286775cb5a180930bb1f5029df2e991bfbd84f973832699c36fe84b.png" />
+<img alt="../../_images/880a7925a0f99888f5679bcca545be9334193107a32ea6f1221b996a8fcf778f.png" src="../../_images/880a7925a0f99888f5679bcca545be9334193107a32ea6f1221b996a8fcf778f.png" />
+<img alt="../../_images/4bbd2b9b6e9acd79de1633400cb59af0e7d41761dfe9bdf18af3a9b16c0b5c0e.png" src="../../_images/4bbd2b9b6e9acd79de1633400cb59af0e7d41761dfe9bdf18af3a9b16c0b5c0e.png" />
+<img alt="../../_images/733f301d20342fdc3c830690a31545a5596ded3a7273eec865c2b735ea977082.png" src="../../_images/733f301d20342fdc3c830690a31545a5596ded3a7273eec865c2b735ea977082.png" />
+<img alt="../../_images/c2f2f2dfa1944de603bafdb9df9fcff87dadf28b991739d121c8c57dc0da65e9.png" src="../../_images/c2f2f2dfa1944de603bafdb9df9fcff87dadf28b991739d121c8c57dc0da65e9.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_18727</span><span class="o">/</span><span class="mf">1781393980.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">eps2_x</span><span class="p">,</span> <span class="n">eps2_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 
+<span class="ne">----&gt; </span><span class="mi">7</span>     <span class="n">p_new</span> <span class="o">=</span> <span class="n">phase_field</span><span class="p">(</span><span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_der</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">p_new</span> <span class="o">=</span> <span class="n">zero_flux</span><span class="p">(</span><span class="n">p_new</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">d_p</span> <span class="o">=</span> <span class="n">p_new</span> <span class="o">-</span> <span class="n">p</span>
+
+<span class="nn">/tmp/ipykernel_18727/1583335209.py</span> in <span class="ni">phase_field</span><span class="nt">(dx, dy, eps, eps_der, p_x, p_y, p, T)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">m</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">gamma</span><span class="o">*</span><span class="p">(</span><span class="n">T_eq</span><span class="o">-</span><span class="n">T</span><span class="p">))</span>
+<span class="ne">----&gt; </span><span class="mi">7</span>     <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">part1</span><span class="o">+</span><span class="n">part2</span><span class="o">+</span><span class="n">part3</span> <span class="o">+</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">laplace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">term2</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="n">m</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">noise</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Konayashi_1993-main/numpy_version"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

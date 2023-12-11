@@ -67,8 +67,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '2.1D linear convection';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Step 2: Nonlinear Convection" href="3.Nonlinear%20convection.html" />
-    <link rel="prev" title="Python Crash Course" href="1.Python%20Numpy.html" />
+    <link rel="next" title="Step 2: Nonlinear Convection and Upwind Scheme" href="3.Nonlinear%20convection.html" />
+    <link rel="prev" title="Step 0: Introduction of Computational Fluid Dynamics" href="0.intro_CFD.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -155,8 +155,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/ZGAN.jpg" class="logo__image only-light" alt="CFD with Python - Home"/>
-    <script>document.write(`<img src="_static/ZGAN.jpg" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+    <img src="_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
   
   
 </a></div>
@@ -166,18 +166,34 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    Welcome to your Jupyter Book
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
-<li class="toctree-l1"><a class="reference internal" href="1.Python%20Numpy.html">Python Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 1: 1-D Linear Convection</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
 </ul>
 
     </div>
@@ -373,10 +389,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: 1-D Linear Convection</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes">Accuray of finite difference schemes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes-optional">Accuray of finite difference schemes (optional)</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -387,10 +401,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <p>Hello! Welcome to the practical module that is used in the beginning of an interactive Computational Fluid Dynamics (CFD) course. The course assumes only basic programming knowledge (in any language) and of course some foundation in partial differential equations and fluid mechanics. The course is taught entirely using Python and students who don’t know Python just learn as we work through the module.</p>
-<p>This Jupyter notebook will lead you through the first step of programming your own Navier–Stokes solver in Python from the ground up. We’re going to dive right in. Don’t worry if you don’t understand everything that’s happening at first, we’ll cover it in detail as we move forward and you can support your learning.</p>
-<p>For best results, after you follow this notebook, prepare your own code, either as a Python script or in a clean Jupyter notebook.</p>
-<p>To execute this Notebook, we assume you have invoked the notebook server using: jupyter notebook.</p>
+  <p>Welcome to the introductory practical module of our interactive Computational Fluid Dynamics (CFD) course. This course, requiring only basic programming skills and foundational knowledge in fluid mechanics and differential equations, is conducted entirely in Python. Beginners in Python will learn as we progress through the course.</p>
+<p>In this Jupyter notebook, we’ll start developing a Navier-Stokes solver in Python. Don’t worry if some concepts aren’t clear initially; we’ll explore them thoroughly as we go along. After completing this notebook, try writing your own code in Python or in a fresh Jupyter notebook.</p>
+<p>Note: It’s assumed that you have initiated the Jupyter notebook server with the command: jupyter notebook.</p>
 <section id="step-1-1-d-linear-convection">
 <h1>Step 1: 1-D Linear Convection<a class="headerlink" href="#step-1-1-d-linear-convection" title="Permalink to this heading">#</a></h1>
 <hr class="docutils" />
@@ -432,14 +445,14 @@ document.write(`
 <p>Now let’s define a few variables; we want to define an evenly spaced grid of points within a spatial domain that is 2 units of length wide, i.e., <span class="math notranslate nohighlight">\(x_i\in(0,2)\)</span>.  We’ll define a variable <code class="docutils literal notranslate"><span class="pre">nx</span></code>, which will be the number of grid points we want and <code class="docutils literal notranslate"><span class="pre">dx</span></code> will be the distance between any pair of adjacent grid points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span> <span class="o">=</span> <span class="mi">81</span> <span class="c1"># try changing this number from 41 to 81 and Run All... What happens?</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nx</span> <span class="o">=</span> <span class="mi">61</span> <span class="c1"># try changing this number from 41 to 81 and Run All... What happens?</span>
 <span class="n">dx</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># delta x</span>
 <span class="n">dx</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.025
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03333333333333333
 </pre></div>
 </div>
 </div>
@@ -448,7 +461,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nt</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c1">#nt is the number of timesteps we want to calculate</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.025</span>  <span class="c1">#dt is the number of time that each timestep covers (delta t)</span>
-<span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>     <span class="c1">#assumewavespeed of c = 1</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c1">#assume wavespeed of c = 1</span>
 </pre></div>
 </div>
 </div>
@@ -466,10 +479,9 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 2. 2. 2. 2.
- 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 1. 1. 1. 1. 1. 1. 1.
- 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
- 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 2. 2. 2. 2. 2. 2. 2. 2. 2.
+ 2. 2. 2. 2. 2. 2. 2. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.
+ 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
 </pre></div>
 </div>
 </div>
@@ -495,7 +507,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5fc1db431ffefd569c41449c69a43a1395e00c959df0ef63add7a5695e72ad73.png" src="_images/5fc1db431ffefd569c41449c69a43a1395e00c959df0ef63add7a5695e72ad73.png" />
+<img alt="_images/54b0a87ca745af383cb0042e491f046b88e829e13e6939d27b17794f65c1f2dc.png" src="_images/54b0a87ca745af383cb0042e491f046b88e829e13e6939d27b17794f65c1f2dc.png" />
 </div>
 </div>
 <p>Why doesn’t the hat function have perfectly straight sides? Think for a bit.</p>
@@ -525,14 +537,32 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ad3ac9be6e743a17ba231312642638e84b6b3ffb26842e7691f21faace1f57a.png" src="_images/6ad3ac9be6e743a17ba231312642638e84b6b3ffb26842e7691f21faace1f57a.png" />
+<img alt="_images/03cb12b3edb5a3b08bc3c7435ebb1320035a051b71949f229d6a5cad77126652.png" src="_images/03cb12b3edb5a3b08bc3c7435ebb1320035a051b71949f229d6a5cad77126652.png" />
 </div>
 </div>
 <p>OK! So our hat function has definitely moved to the right (its center from 0.75 to 1.25), but it’s no longer a hat.  <strong>What’s going on?</strong></p>
-</section>
-<section id="accuray-of-finite-difference-schemes">
-<h1>Accuray of finite difference schemes<a class="headerlink" href="#accuray-of-finite-difference-schemes" title="Permalink to this heading">#</a></h1>
-<p>Taylor expansions:</p>
+<p>Another, more severe issue arises when changing the value of ‘c’ from 1 to -1, resulting in the solver experiencing instability. <strong>What’s going on?</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="n">un</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span> <span class="c1"># initialize a temporary array</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span> <span class="c1"># loop n from 0 to nt-1, so it will run nt times</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># copy the existing values of u into un</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">):</span> <span class="c1"># change the range to 0 to nx, and see what happens</span>
+        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">);</span>        
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b95c46b3ac4b397cf2503649cda4d766ebd6f2bf379664a84a0499587377cec5.png" src="_images/b95c46b3ac4b397cf2503649cda4d766ebd6f2bf379664a84a0499587377cec5.png" />
+</div>
+</div>
+<section id="accuray-of-finite-difference-schemes-optional">
+<h2>Accuray of finite difference schemes (optional)<a class="headerlink" href="#accuray-of-finite-difference-schemes-optional" title="Permalink to this heading">#</a></h2>
+<p>Taylor expansions are instrumental in assessing the accuracy of finite difference schemes, specifically how the rate of error reduction corresponds to a decrease in cell size:</p>
 <p><span class="math notranslate nohighlight">\(u(x+\Delta x)=u(x)+\Delta x \frac{\partial u}{\partial x}\big|_x+ \frac{\Delta x^2}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x+\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...+\frac{\Delta x^n}{n!}\frac{\partial^n u}{\partial x^n}\big|_x+...\)</span></p>
 <p><span class="math notranslate nohighlight">\(u(x-\Delta x)=u(x)-\Delta x \frac{\partial u}{\partial x}\big|_x+ \frac{\Delta x^2}{2!}\frac{\partial^2 u}{\partial x^2}\big|_x-\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...+\frac{\Delta x^n}{n!}\frac{\partial^n u}{\partial x^n}\big|_x-...\)</span></p>
 <p>Reorganize the first Taylor expansion, we get the Forward Differencing scheme  (1st order accuracy):
@@ -542,6 +572,7 @@ document.write(`
 <p>Substract the second one from the first one, we get the Central Differencing scheme (2nd order accuracy):
 <span class="math notranslate nohighlight">\(u(x+\Delta x)-u(x-\Delta x)=2\frac{\partial u}{\partial x}\big|_x+2\frac{\Delta x^3}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...\)</span></p>
 <p><span class="math notranslate nohighlight">\(\frac{\partial u}{\partial x}\big|_x=\frac{u(x+\Delta x)-u(x-\Delta x)}{2\Delta x}+2\frac{\Delta x^2}{3!}\frac{\partial^3 u}{\partial x^3}\big|_x+...=\frac{u(x+\Delta x)-u(x-\Delta x)}{2\Delta x}+O(\Delta x^2)\)</span></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -575,12 +606,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="1.Python%20Numpy.html"
+       href="0.intro_CFD.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Python Crash Course</p>
+        <p class="prev-next-title">Step 0: Introduction of Computational Fluid Dynamics</p>
       </div>
     </a>
     <a class="right-next"
@@ -588,7 +619,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Step 2: Nonlinear Convection</p>
+        <p class="prev-next-title">Step 2: Nonlinear Convection and Upwind Scheme</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -607,10 +638,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Step 1: 1-D Linear Convection</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes">Accuray of finite difference schemes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accuray-of-finite-difference-schemes-optional">Accuray of finite difference schemes (optional)</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>

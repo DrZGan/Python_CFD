@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 18 (Speical Topic 2): Phase-field Method &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Step 19 (Speical Topic 3): Optimization of Dynamical Systems" href="../../25.%20Optimization%20of%20a%20dynamical%20system.html" />
+    <link rel="prev" title="Step 17 (Speical Topic 1): Implicit Solver" href="../../S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="../../_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FKonayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 18 (Speical Topic 2): Phase-field Method</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-18-speical-topic-2-phase-field-method">
+<h1>Step 18 (Speical Topic 2): Phase-field Method<a class="headerlink" href="#step-18-speical-topic-2-phase-field-method" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<p>In this step, we will employ the phase-field method to address multiphase flow problems, specifically those involving interactions between different phases such as liquid, gas, and solid. The key to this method is the use of an order parameter <span class="math notranslate nohighlight">\( p \)</span> to distinguish the interfaces between these phases. In our notation, <span class="math notranslate nohighlight">\( p = 1 \)</span> represents the solid phase and <span class="math notranslate nohighlight">\( p = 0 \)</span> the liquid phase, with values between 0 and 1 indicating the phase interface. We will apply this phase-field method to simulate the formation of a snowflake from supercooled water, as described in the research by Kobayashi et al. (<a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/016727899390120P">Kobayashi .et al</a>). The governing equation for the order parameter field is derived by minimizing the total free energy, based on the Ginzburg-Landau type free energy theory.</p>
+<p>Ginzburg-Landau type free energy:</p>
+<p>\begin{align*}
+\phi(p,m) &amp;= \int \frac{1}{2} \epsilon (-\nabla p)^2 |\nabla p|^2 + F(p,m) dr \
+F(p,m) &amp;= \frac{1}{4}p^4 - (\frac{1}{2}-\frac{1}{3}m)p^3 + (\frac{1}{4}-\frac{1}{2}m)p^2
+\end{align*}</p>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is order parameter at the position <span class="math notranslate nohighlight">\(r\)</span> and the time <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(m\)</span> is a model parameter that determines the profile of double-well potential <span class="math notranslate nohighlight">\(F\)</span>, which gives a thermodynamical driving force. <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/016727899390120P">Kobayashi .et al</a> take it as a function of non-dimensionalized temperature <span class="math notranslate nohighlight">\(T\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ m(T)= \frac{\alpha}{\pi} tan^{-1} [\gamma (T_e - T)] \]</div>
+<p>where <span class="math notranslate nohighlight">\(T_e\)</span> is an equilibrium temperature, <span class="math notranslate nohighlight">\(\alpha\)</span> is a positive constant satisfying <span class="math notranslate nohighlight">\(\alpha&lt;1\)</span>. <span class="math notranslate nohighlight">\(\epsilon\)</span> is small parameter which determines the thickness of solid/liquid interface. And anisotropy can be introduced by assuming <span class="math notranslate nohighlight">\(\epsilon\)</span> depends on the direction of the outer normal vector at the interface. <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/016727899390120P">Kobayashi .et al</a> take the form <span class="math notranslate nohighlight">\(\epsilon = \epsilon(\theta) = \bar{\epsilon} \sigma(\theta)\)</span>, where <span class="math notranslate nohighlight">\(\theta\)</span> is an angle between the outer normal vector <span class="math notranslate nohighlight">\(-\nabla p\)</span> and the positive direction of the x-axis, <span class="math notranslate nohighlight">\(\bar{\epsilon}\)</span> is a mean value of <span class="math notranslate nohighlight">\(\epsilon\)</span>, and <span class="math notranslate nohighlight">\(\sigma(\theta)\)</span> represents anisotripy:</p>
+<div class="math notranslate nohighlight">
+\[ \sigma(\theta) = 1 + \delta cos[j(\theta-\theta_0)] \]</div>
+<p>where the parameter <span class="math notranslate nohighlight">\(\delta\)</span> means the strength of anisotropy and <span class="math notranslate nohighlight">\(j\)</span> is a mode number of anisotropy. Then from the formula <span class="math notranslate nohighlight">\( \tau \frac{\partial p}{\partial t} = -\frac{\delta \phi}{\partial p} \)</span> we obtain the evolution equation for the order parameter:</p>
+<div class="math notranslate nohighlight">
+\[ 
+\tau \frac{\partial p}{\partial t} = -\frac{\partial}{\partial x} (\epsilon \epsilon' \frac{\partial p}{\partial y}) + \frac{\partial}{\partial y} (\epsilon \epsilon' \frac{\partial p}{\partial x}) +
+\nabla \cdot (\epsilon^2 \nabla p) + p(1-p)(p-\frac{1}{2}+m)
+\]</div>
+<p>In order to make the simulation more realistic, a small noise term <span class="math notranslate nohighlight">\( ap(1-p)\chi \)</span> is added to the interface, where <span class="math notranslate nohighlight">\(a\)</span> is an amplitude of the noise and <span class="math notranslate nohighlight">\(\chi\)</span> is a random number on <span class="math notranslate nohighlight">\([-\frac{1}{2}, \frac{1}{2}]\)</span>.</p>
+<p>The equation for non-dimensionalized temperature <span class="math notranslate nohighlight">\(T\)</span> is derived from the conservation law of enthalpy as:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial T}{\partial t} = \nabla^2 T + K \frac{\partial p}{\partial t} \]</div>
+<p>where <span class="math notranslate nohighlight">\(K\)</span> is a dimensionless latent heat.</p>
+<p>Discretization</p>
+<hr class="docutils" />
+<p>For the order parameter evolution equation, the 1st term on right hand side of (part1):
+$<span class="math notranslate nohighlight">\(
+-\frac{\partial}{\partial x} (\epsilon \epsilon' \frac{\partial p}{\partial y}) = -
+\frac{
+\epsilon^n_{i+1,j} \cdot \epsilon'^n_{i+1,j} \cdot \frac{p^n_{i+1,j+1}-p^n_{i+1,j-1}}{2\Delta y} -
+\epsilon^n_{i-1,j} \cdot \epsilon'^n_{i-1,j} \cdot \frac{p^n_{i-1,j+1}-p^n_{i-1,j-1}}{2\Delta y}
+} {2\Delta x}
+\)</span>$</p>
+<p>The 2nd term on right hand side (part2):
+$<span class="math notranslate nohighlight">\(
+\frac{\partial}{\partial y} (\epsilon \epsilon' \frac{\partial p}{\partial x}) = 
+\frac{
+\epsilon^n_{i,j+1} \cdot \epsilon'^n_{i,j+1} \cdot \frac{p^n_{i+1,j+1}-p^n_{i-1,j+1}}{2\Delta x} -
+\epsilon^n_{i,j-1} \cdot \epsilon'^n_{i,j-1} \cdot \frac{p^n_{i+1,j-1}-p^n_{i-1,j-1}}{2\Delta x}
+} {2\Delta y}
+\)</span>$</p>
+<p>The 3nd term on right hand (part3 &amp; part4):</p>
+<p>\begin{align*}
+\nabla \cdot (\epsilon^2 \nabla p) &amp;= \nabla (\epsilon^2) \cdot \nabla p + \epsilon^2 \cdot \nabla^2 p \
+\nabla (\epsilon^2) \cdot \nabla p &amp;= \frac{(\epsilon^2)^n_{i+1,j}-(\epsilon^2)^n_{i-1,j}} {2\Delta x} \cdot \frac{p^n_{i+1,j}-p^n_{i-1,j}} {2\Delta x} +
+\frac{(\epsilon^2)^n_{i,j+1}-(\epsilon^2)^n_{i,j-1}} {2\Delta y} \cdot \frac{p^n_{i,j+1}-p^n_{i,j-1}} {2\Delta y} \
+\epsilon^2 \cdot \nabla^2 p &amp;= \epsilon^2 \cdot (\frac{p^n_{i+1,j} + p^n_{i-1,j} - 2p^n_{i,j}} {\Delta x^2} + \frac{p^n_{i,j+1}+p^n_{i,j-1}-2p^n_{i,j}} {\Delta y^2})
+\end{align*}</p>
+<p>For the temprature evolution equation,
+$<span class="math notranslate nohighlight">\(
+T^{n+1}_{i,j} = T^n_{i,j} + (\frac{T^n_{i+1,j} + T^n_{i-1,j} - 2T^n_{i,j}} {\Delta x^2} + \frac{T^n_{i,j+1}+T^n_{i,j-1}-2T^n_{i,j}} {\Delta y^2}) \Delta t + K(p^{n+1}_{i,j}-p^n_{i,j})
+\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">jax.numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">yaml_parse</span><span class="p">(</span><span class="n">yaml_filepath</span><span class="p">):</span>     
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YAML parameters:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">args</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">case_name</span> <span class="o">=</span> <span class="s1">&#39;ice&#39;</span>
+<span class="n">work_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="n">case_path</span> <span class="o">=</span> <span class="n">work_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">case_name</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">case_path</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">case_path</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">case_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory &#39;</span><span class="si">{</span><span class="n">case_name</span><span class="si">}</span><span class="s2">&#39; created at work_path.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory &#39;</span><span class="si">{</span><span class="n">case_name</span><span class="si">}</span><span class="s2">&#39; already exists at work_path.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">case_path</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">case_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            
+<span class="n">args</span> <span class="o">=</span> <span class="n">yaml_parse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.yaml&#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">case_name</span><span class="p">)))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/mnt/c/Working fold/Courses/Book/CFDwithPython/Konayashi_1993-main/jax_version/ice
+Directory &#39;ice&#39; already exists at work_path.
+YAML parameters:
+J: 6
+K: 1.6
+T_eq: 1.0
+a: 0.01
+alpha: 0.9
+delta: 0.04
+dt: 0.0001
+eps_bar: 0.01
+gamma: 10.0
+hx: 0.03
+hy: 0.03
+nx: 300
+ny: 300
+t_OFF: 0.36
+tau: 0.0003
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span>
+<span class="n">t_OFF</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;t_OFF&#39;</span><span class="p">]</span>
+<span class="n">hx</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hx&#39;</span><span class="p">]</span>
+<span class="n">hy</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;hy&#39;</span><span class="p">]</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">]</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;ny&#39;</span><span class="p">]</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;K&#39;</span><span class="p">]</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;tau&#39;</span><span class="p">]</span>
+<span class="n">T_eq</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;T_eq&#39;</span><span class="p">]</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">]</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span>
+<span class="n">eps_bar</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;eps_bar&#39;</span><span class="p">]</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">nIter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t_OFF</span><span class="o">/</span><span class="n">dt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initializing</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">p_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps_prime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps2_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">eps2_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+
+<span class="sd">&#39;&#39;&#39;circle&#39;&#39;&#39;</span>
+<span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">onp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">onp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nx</span><span class="p">),</span> <span class="n">onp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">mask</span> <span class="o">=</span>  <span class="p">((</span><span class="n">i</span> <span class="o">-</span> <span class="n">nx</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="n">ny</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">20.</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
+<span class="sd">&#39;&#39;&#39;hexagon&#39;&#39;&#39;</span>
+<span class="c1"># x0, y0, L = nx//2, ny//2, 10</span>
+<span class="c1"># lk = -1 / np.sqrt(3)</span>
+<span class="c1"># b0 = y0-L+x0/np.sqrt(3)</span>
+<span class="c1"># b1 = L+y0+x0/np.sqrt(3)</span>
+<span class="c1"># b2 = y0-L-x0/np.sqrt(3)</span>
+<span class="c1"># b3 = y0+L-x0/np.sqrt(3)</span>
+<span class="c1"># for i in range(nx):</span>
+<span class="c1">#     for j in range(ny):</span>
+<span class="c1">#         if i&gt;=x0-L and i&lt;=x0+L and j&lt;=b1+lk*i and j&gt;=b2-lk*i and j&lt;=b3-lk*i and j&gt;=b0+lk*i:</span>
+<span class="c1">#             p[i,j] = 1.</span>
+            
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+</pre></div>
+</div>
+<img alt="../../_images/517a617473cf42fd74dabb7bd299c8690530e45b369dac42456f58d5fb852c51.png" src="../../_images/517a617473cf42fd74dabb7bd299c8690530e45b369dac42456f58d5fb852c51.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span> <span class="c1"># Central differecing</span>
+    <span class="n">m_neg_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_pos_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">m</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_neg_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m_pos_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">f_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_pos_x</span> <span class="o">-</span> <span class="n">m_neg_x</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span><span class="n">dx</span>
+    <span class="n">f_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_pos_y</span> <span class="o">-</span> <span class="n">m_neg_y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">/</span><span class="n">dy</span>
+    <span class="k">return</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">f_y</span>
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">laplace</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">):</span> <span class="c1"># Central differecing</span>
+    <span class="n">m_neg_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_pos_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">m</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">m_neg_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">m_pos_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">m</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">m_neg_x</span> <span class="o">+</span> <span class="n">m_pos_x</span> <span class="o">-</span> <span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="n">hx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">m_neg_y</span> <span class="o">+</span> <span class="n">m_pos_y</span> <span class="o">-</span> <span class="mf">2.</span><span class="o">*</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="n">hy</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_theta</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">f_x</span><span class="p">,</span> <span class="n">f_y</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="mf">.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="o">/</span><span class="n">f_x</span><span class="p">),</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f_y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="o">/</span><span class="n">f_x</span><span class="p">),</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">f_x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">f_y</span><span class="o">/</span><span class="n">f_x</span><span class="p">),</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">theta</span>
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_eps</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">eps_bar</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">delta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">J</span><span class="o">*</span><span class="n">angle</span><span class="p">)),</span> <span class="o">-</span><span class="n">eps_bar</span><span class="o">*</span><span class="n">J</span><span class="o">*</span><span class="n">delta</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">J</span><span class="o">*</span><span class="n">angle</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">phase_field</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_prime</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>    
+    <span class="n">part1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">*</span><span class="n">eps_prime</span><span class="o">*</span><span class="n">p_y</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">part2</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">*</span><span class="n">eps_prime</span><span class="o">*</span><span class="n">p_x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    <span class="n">part3</span> <span class="o">=</span> <span class="n">eps2_x</span><span class="o">*</span><span class="n">p_x</span> <span class="o">+</span> <span class="n">eps2_y</span><span class="o">*</span><span class="n">p_y</span>
+    <span class="n">part4</span> <span class="o">=</span> <span class="n">eps</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">laplace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+    
+    <span class="n">m</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">gamma</span><span class="o">*</span><span class="p">(</span><span class="n">T_eq</span><span class="o">-</span><span class="n">T</span><span class="p">))</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">part1</span> <span class="o">+</span> <span class="n">part2</span> <span class="o">+</span> <span class="n">part3</span> <span class="o">+</span> <span class="n">part4</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="mf">0.5</span><span class="o">+</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">chi</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
+    <span class="n">noise</span> <span class="o">=</span>  <span class="n">a</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">chi</span>
+    
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">dt</span><span class="o">/</span><span class="n">tau</span><span class="o">*</span><span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+    <span class="c1">#mask = (p &lt;= 0.9) &amp; (p &gt;= 0.1)</span>
+    <span class="k">return</span> <span class="n">p_new</span> <span class="c1">#np.where(mask, p_new+noise, p_new)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">T_field</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d_eta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">T</span> <span class="o">+</span> <span class="n">dt</span><span class="o">*</span><span class="n">laplace</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">hx</span><span class="p">,</span><span class="n">hy</span><span class="p">)</span> <span class="o">+</span> <span class="n">K</span><span class="o">*</span><span class="n">d_eta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">zero_flux_BC</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">arr</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,:])</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">at</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">arr</span><span class="p">[:,</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">arr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nIter</span><span class="p">):</span>
+    <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">get_theta</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">)</span>
+    <span class="n">eps</span><span class="p">,</span> <span class="n">eps_prime</span> <span class="o">=</span> <span class="n">get_eps</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">eps2_x</span><span class="p">,</span> <span class="n">eps2_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+    
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">phase_field</span><span class="p">(</span><span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_prime</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span> 
+    <span class="n">p_new</span> <span class="o">=</span> <span class="n">zero_flux_BC</span><span class="p">(</span><span class="n">p_new</span><span class="p">)</span>
+    <span class="n">d_p</span> <span class="o">=</span> <span class="n">p_new</span> <span class="o">-</span> <span class="n">p</span>
+    
+    <span class="n">T_new</span> <span class="o">=</span> <span class="n">T_field</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">d_p</span><span class="p">)</span>
+    <span class="n">T_new</span> <span class="o">=</span> <span class="n">zero_flux_BC</span><span class="p">(</span><span class="n">T_new</span><span class="p">)</span>
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="n">p_new</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T_new</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">case_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%f</span><span class="s2">.png&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">case_name</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>  
+        <span class="c1">#plt.show()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+<span class="c1">#     if (i+1) % 1000 == 0: </span>
+<span class="c1">#         print(t)</span>
+        
+    <span class="n">t</span> <span class="o">+=</span> <span class="n">dt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;t=&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_18616</span><span class="o">/</span><span class="mf">60202720.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">eps2_x</span><span class="p">,</span> <span class="n">eps2_y</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">eps</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 
+<span class="ne">----&gt; </span><span class="mi">7</span>     <span class="n">p_new</span> <span class="o">=</span> <span class="n">phase_field</span><span class="p">(</span><span class="n">hx</span><span class="p">,</span> <span class="n">hy</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps_prime</span><span class="p">,</span> <span class="n">p_x</span><span class="p">,</span> <span class="n">p_y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">p_new</span> <span class="o">=</span> <span class="n">zero_flux_BC</span><span class="p">(</span><span class="n">p_new</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">d_p</span> <span class="o">=</span> <span class="n">p_new</span> <span class="o">-</span> <span class="n">p</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">case_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%f</span><span class="s2">.png&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">case_name</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/mnt/c/Working fold/Courses/CFD/python code/Konayashi_1993-main/jax_version/ice/ice_0.280000.png&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">imageio.v2</span> <span class="k">as</span> <span class="nn">imageio</span>
+<span class="c1"># Collecting filenames</span>
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">case_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">case_name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">):</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">case_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+
+<span class="c1"># Sorting filenames - Important if &#39;t&#39; increments regularly</span>
+<span class="c1"># This sort works if &#39;t&#39; has a fixed number of decimal places</span>
+<span class="n">filenames</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># Create an animation from the saved images</span>
+<span class="n">animation_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">case_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">case_name</span><span class="si">}</span><span class="s2">_animation.gif&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">imageio</span><span class="o">.</span><span class="n">get_writer</span><span class="p">(</span><span class="n">animation_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">imageio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">append_data</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+<span class="c1"># The saved animation path</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Animation saved at: </span><span class="si">{</span><span class="n">animation_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Animation saved at: /mnt/c/Working fold/Courses/CFD/python code/Konayashi_1993-main/jax_version/ice/ice_animation.gif
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="c1"># Path to your GIF file</span>
+<span class="n">gif_path</span> <span class="o">=</span> <span class="n">animation_path</span>  <span class="c1"># Replace with your actual file path</span>
+
+<span class="c1"># Display the GIF in Jupyter Notebook</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">gif_path</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a0bfdd46dbe31cdb73135cf02efa26b3c68efd09c0567ddfacf6a49d6bd4f38d.gif" src="../../_images/a0bfdd46dbe31cdb73135cf02efa26b3c68efd09c0567ddfacf6a49d6bd4f38d.gif" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Konayashi_1993-main/jax_version"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 17 (Speical Topic 1): Implicit Solver</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../25.%20Optimization%20of%20a%20dynamical%20system.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

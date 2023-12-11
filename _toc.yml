@@ -4,9 +4,26 @@
 format: jb-book
 root: intro
 chapters:
-- file: markdown
-- file: notebooks
-- file: markdown-notebooks
-- file: 1.Python Numpy
+- file: 0.intro_CFD
 - file: 2.1D linear convection
-- file: 3.Nonlinear convection.ipynb
+- file: 3.Nonlinear convection
+- file: 4. CFL condition
+- file: 5. 1D diffusion equation
+- file: 6. Burgers' equation
+- file: 7. Array_Operations_with_NumPy
+- file: 8. 2D Linear Convection
+- file: 9. 2D nonlinear convection
+- file: 10. 2D Diffusion
+- file: 11. Burgers' equation
+- file: 13. 2D Laplace equation
+- file: 14. 2D Poisson equation
+- file: 15. Cavity flow with Naiver-Stokes equation
+- file: 15.1. Cavity flow with upwind scheme
+- file: 15.2. Cavity flow with Chorin's Projection
+- file: 16. Poiseuille channel flow
+- file: Copy_of_17_JAX_basic.md
+- file: Copy_of_23_2D_Diffusion_Numpy_and_JAX.md
+- file: S1. 2D Poisson equation-implicit and explicit JAX method
+- file: Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2
+- file: 25. Optimization of a dynamical system
+- file: 26.LBM/26. LBM Poiseuille flow-2

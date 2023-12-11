@@ -3,7 +3,7 @@
 
 title: CFD with Python
 author: Zhengtao Gan
-logo: ZGAN.jpg
+logo: courselogo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
