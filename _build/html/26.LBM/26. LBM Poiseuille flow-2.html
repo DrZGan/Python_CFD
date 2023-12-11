@@ -247,7 +247,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+      <li><a href="https://github.com/DrZGan/Python_CFD" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -264,7 +264,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F26.LBM/26. LBM Poiseuille flow-2.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/DrZGan/Python_CFD/issues/new?title=Issue%20on%20page%20%2F26.LBM/26. LBM Poiseuille flow-2.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -640,12 +640,12 @@ $<span class="math notranslate nohighlight">\( \mu = \rho(\tau-\frac{1}{2}) \Del
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_18186</span><span class="o">/</span><span class="mf">2661124440.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_21037</span><span class="o">/</span><span class="mf">2661124440.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>         <span class="c1"># Calculate fluid variables</span>
 <span class="g g-Whitespace">     </span><span class="mi">21</span>         <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="n">ux</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">*</span><span class="n">cxs</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho</span>
-<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="n">uy</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">*</span><span class="n">cys</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho</span>
+<span class="ne">---&gt; </span><span class="mi">22</span>         <span class="n">ux</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">*</span><span class="n">cxs</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span>         <span class="n">uy</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="o">*</span><span class="n">cys</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">rho</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span> 
-<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="c1"># Apply Collision</span>
 
 <span class="nn">~/.local/lib/python3.10/site-packages/numpy/core/fromnumeric.py</span> in <span class="ni">sum</span><span class="nt">(a, axis, dtype, out, keepdims, initial, where)</span>
 <span class="g g-Whitespace">   </span><span class="mi">2311</span>         <span class="k">return</span> <span class="n">res</span>
