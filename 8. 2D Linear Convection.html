@@ -1,0 +1,725 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 7: 2D Linear Convection &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '8. 2D Linear Convection';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 8: 2-D Convection" href="9.%202D%20nonlinear%20convection.html" />
+    <link rel="prev" title="Step 6: Array Operations with NumPy" href="7.%20Array_Operations_with_NumPy.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F8. 2D Linear Convection.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/8. 2D Linear Convection.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 7: 2D Linear Convection</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iterating-in-two-dimensions">Iterating in two dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#array-operations">Array Operations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-7-2d-linear-convection">
+<h1>Step 7: 2D Linear Convection<a class="headerlink" href="#step-7-2d-linear-convection" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<p>Up to now, all of our work has been in one spatial dimension. We can learn a lot in just 1D, but let’s grow up to flatland: two dimensions.</p>
+<p>In the following exercises, you will extend the first four steps to 2D. To extend the 1D finite-difference formulas to partial derivatives in 2D or 3D, just apply the definition: a partial derivative with respect to <span class="math notranslate nohighlight">\(x\)</span> is the variation in the <span class="math notranslate nohighlight">\(x\)</span> direction <em>at constant</em> <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>In 2D space, a rectangular (uniform) grid is defined by the points with coordinates:</p>
+<div class="math notranslate nohighlight">
+\[x_i = x_0 +i \Delta x\]</div>
+<div class="math notranslate nohighlight">
+\[y_i = y_0 +i \Delta y\]</div>
+<p>Now, define <span class="math notranslate nohighlight">\(u_{i,j} = u(x_i,y_j)\)</span> and apply the finite-difference formulas on either variable <span class="math notranslate nohighlight">\(x,y\)</span> <em>acting separately</em> on the <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> indices. All derivatives are based on the 2D Taylor expansion of a mesh point value around <span class="math notranslate nohighlight">\(u_{i,j}\)</span>.</p>
+<p>Hence, for a first-order partial derivative in the <span class="math notranslate nohighlight">\(x\)</span>-direction, a finite-difference formula is:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial u}{\partial x}\biggr\rvert_{i,j} = \frac{u_{i+1,j}-u_{i,j}}{\Delta x}+\mathcal{O}(\Delta x)\]</div>
+<p>and similarly in the <span class="math notranslate nohighlight">\(y\)</span> direction. Thus, we can write backward-difference, forward-difference or central-difference formulas. Let’s get started!</p>
+<p>The PDE governing 2-D Linear Convection is written as</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u}{\partial t}+c\frac{\partial u}{\partial x} + c\frac{\partial u}{\partial y} = 0\]</div>
+<p>This is the exact same form as with 1-D Linear Convection, except that we now have two spatial dimensions to account for as we step forward in time.</p>
+<p>Again, the timestep will be discretized as a forward difference and both spatial steps will be discretized as backward differences.</p>
+<p>With 1-D implementations, we used <span class="math notranslate nohighlight">\(i\)</span> subscripts to denote movement in space (e.g. <span class="math notranslate nohighlight">\(u_{i}^n-u_{i-1}^n\)</span>).  Now that we have two dimensions to account for, we need to add a second subscript, <span class="math notranslate nohighlight">\(j\)</span>, to account for all the information in the regime.</p>
+<p>Here, we’ll again use <span class="math notranslate nohighlight">\(i\)</span> as the index for our <span class="math notranslate nohighlight">\(x\)</span> values, and we’ll add the <span class="math notranslate nohighlight">\(j\)</span> subscript to track our <span class="math notranslate nohighlight">\(y\)</span> values.</p>
+<p>With that in mind, our discretization of the PDE should be relatively straightforward.</p>
+<div class="math notranslate nohighlight">
+\[\frac{u_{i,j}^{n+1}-u_{i,j}^n}{\Delta t} + c\frac{u_{i, j}^n-u_{i-1,j}^n}{\Delta x} + c\frac{u_{i,j}^n-u_{i,j-1}^n}{\Delta y}=0\]</div>
+<p>As before, solve for the only unknown:</p>
+<div class="math notranslate nohighlight">
+\[u_{i,j}^{n+1} = u_{i,j}^n-c \frac{\Delta t}{\Delta x}(u_{i,j}^n-u_{i-1,j}^n)-c \frac{\Delta t}{\Delta y}(u_{i,j}^n-u_{i,j-1}^n)\]</div>
+<p>We will solve this equation with the following initial conditions:</p>
+<div class="math notranslate nohighlight">
+\[u(x,y) = \begin{cases}
+\begin{matrix}
+2\ \text{for} &amp; 0.5 \leq x, y \leq 1 \cr
+1\ \text{for} &amp; \text{everywhere else}\end{matrix}\end{cases}\]</div>
+<p>and boundary conditions:</p>
+<div class="math notranslate nohighlight">
+\[u = 1\ \text{for } \begin{cases}
+\begin{matrix}
+x =  0,\ 2 \cr
+y =  0,\ 2 \end{matrix}\end{cases}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span> <span class="c1">#New library required for projected 3d plots</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span><span class="p">,</span> <span class="n">cm</span>
+
+<span class="c1">#variables declarations</span>
+
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">81</span>
+<span class="n">ny</span> <span class="o">=</span> <span class="mi">81</span>
+<span class="n">nt</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">nx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">ny</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span><span class="mf">.2</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">dx</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span> <span class="c1"># create 2d array of 1&#39;s</span>
+<span class="n">un</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span> <span class="c1"># placeholder</span>
+
+<span class="c1">## inital conditions</span>
+
+<span class="c1"># set hat function I.C.: u(0.5&lt;=x&lt;=1 &amp;&amp; 0.5&lt;=y&lt;=1) = 2</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dy</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1">#plot initical condition</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="c1"># The &#39;111&#39; means a grid of 1 row and 1 column and this subplot is the first one.</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/14a998cdcb46deca9bdefb99f884f5aa08a74c13db008e987d16f990539b8c4c.png" src="_images/14a998cdcb46deca9bdefb99f884f5aa08a74c13db008e987d16f990539b8c4c.png" />
+</div>
+</div>
+<section id="iterating-in-two-dimensions">
+<h2>Iterating in two dimensions<a class="headerlink" href="#iterating-in-two-dimensions" title="Permalink to this heading">#</a></h2>
+<p>To evaluate the wave in two dimensions requires the use of several nested for-loops to cover all of the <code class="docutils literal notranslate"><span class="pre">i</span></code>’s and <code class="docutils literal notranslate"><span class="pre">j</span></code>’s.  Since Python is not a compiled language there can be noticeable slowdowns in the execution of code with multiple for-loops.  First try evaluating the 2D convection code and see what results it produces.
+$<span class="math notranslate nohighlight">\(u_{i,j}^{n+1} = u_{i,j}^n-c \frac{\Delta t}{\Delta x}(u_{i,j}^n-u_{i-1,j}^n)-c \frac{\Delta t}{\Delta y}(u_{i,j}^n-u_{i,j-1}^n)\)</span>$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dy</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1">#loop across number of time steps</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">col</span><span class="p">):</span>
+            <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]))</span> <span class="o">-</span>
+                                <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+            <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>771 ms ± 5.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a detailed explanation of the %%timeit magic command:</p>
+<p><strong>Temporary Execution</strong>: The %%timeit magic command executes the code in a separate scope or context. It runs the code several times (for timing and averaging purposes) in a temporary context. Any changes made to variables, including arrays, within the %%timeit block do not affect the variables in the main environment.</p>
+<p><strong>No Permanent Changes</strong>: Since %%timeit is designed for measuring performance and not for making permanent changes to variables or data structures, any update or modification to an array inside a %%timeit cell is not reflected outside that cell.</p>
+<p><strong>Array Unchanged</strong>: As a result, when you update an array within a %%timeit cell and then try to view the array outside of this cell, you’ll see the original, unchanged array. The updates you made inside %%timeit do not persist.</p>
+<p>To observe the changes you’ve made to an array, you need to update the array outside of the %%timeit cell. You can then use %%timeit separately to measure the performance of the update operation without expecting it to modify the array for later use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dy</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1">#loop across number of time steps</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">col</span><span class="p">):</span>
+            <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]))</span> <span class="o">-</span>
+                                <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+            <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="c1"># The &#39;111&#39; means a grid of 1 row and 1 column and this subplot is the first one.</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6ccf554b2fde0f2b03401b4870f70de88a414c02d281f957711d69ef38fa39f4.png" src="_images/6ccf554b2fde0f2b03401b4870f70de88a414c02d281f957711d69ef38fa39f4.png" />
+</div>
+</div>
+</section>
+<section id="array-operations">
+<h2>Array Operations<a class="headerlink" href="#array-operations" title="Permalink to this heading">#</a></h2>
+<p>Here the same 2D convection code is implemented, but instead of using nested for-loops, the same calculations are evaluated using array operations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dy</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># loop across number of time steps</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">:]))</span> <span class="o">-</span>
+                            <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.62 ms ± 20.2 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dx</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span><span class="o">/</span><span class="n">dy</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">dy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># loop across number of time steps</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">:]))</span> <span class="o">-</span>
+                            <span class="p">(</span><span class="n">c</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="mi">1</span><span class="p">:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">u</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">7</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="c1"># The &#39;111&#39; means a grid of 1 row and 1 column and this subplot is the first one.</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">u</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6ccf554b2fde0f2b03401b4870f70de88a414c02d281f957711d69ef38fa39f4.png" src="_images/6ccf554b2fde0f2b03401b4870f70de88a414c02d281f957711d69ef38fa39f4.png" />
+</div>
+</div>
+<p>It’s evident that the array operations approach significantly outperforms the for-loop method in terms of speed and efficiency!</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="7.%20Array_Operations_with_NumPy.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 6: Array Operations with NumPy</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="9.%202D%20nonlinear%20convection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 8: 2-D Convection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iterating-in-two-dimensions">Iterating in two dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#array-operations">Array Operations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

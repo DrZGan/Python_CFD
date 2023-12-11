@@ -1,0 +1,1188 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 19 (Speical Topic 3): Optimization of Dynamical Systems &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '25. Optimization of a dynamical system';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 20 (Speical Topic 4): Lattice Boltzmann Method" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html" />
+    <link rel="prev" title="Step 18 (Speical Topic 2): Phase-field Method" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F25. Optimization of a dynamical system.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/25. Optimization of a dynamical system.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 19 (Speical Topic 3): Optimization of Dynamical Systems</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-dynamical-system">Define dynamical system</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-system">Lorenz System</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runge-kutta-method">Runge-Kutta Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-derivatives-with-several-methods">Compute derivatives with several methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-difference-based-gradient-computing-function">Finite Difference Based Gradient Computing Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-differentiation">Automatic Differentiation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-inverse-problem-using-finite-difference-method">Solving the inverse problem using Finite Difference Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-inverse-problem-using-automatic-differentiation-method">Solving the inverse problem using Automatic Differentiation Method</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-19-speical-topic-3-optimization-of-dynamical-systems">
+<h1>Step 19 (Speical Topic 3): Optimization of Dynamical Systems<a class="headerlink" href="#step-19-speical-topic-3-optimization-of-dynamical-systems" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<p>In this step, we integrate a forward Partial Differential Equation (PDE) solver with an optimization algorithm to fine-tune input parameters, ensuring that the solver’s output aligns with specified target values. Utilizing <a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/04-advanced-autodiff.html">Automatic Differentiation</a> in JAX, we can effortlessly compute derivatives of the model output with respect to the input parameters. This capability facilitates the use of gradient-based optimization algorithms, such as the gradient descent method, for efficient exploration of the parameter space. While this step employs an Ordinary Differential Equation (ODE) as the forward solver, the optimization framework is versatile and can be applied to other ODE and PDE solvers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">linear_util</span> <span class="k">as</span> <span class="n">lu</span>
+<span class="kn">from</span> <span class="nn">jax.flatten_util</span> <span class="kn">import</span> <span class="n">ravel_pytree</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">onp</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">opt</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A brief explanation has been given below about what this program does.</p>
+<p>Define a Dynamical System: It sets up a mathematical model that describes how a dynamical system (specifically, the Lorenz system) evolves over time. This model involves equations that govern how the system’s variables change with time.</p>
+<p>Numerical Integration: It uses a numerical method (Runge-Kutta 4th order) to simulate the behavior of the dynamical system over a range of time points. This involves repeatedly applying the equations from the dynamical system to calculate how the system’s variables change at each time step.</p>
+<p>Gradient Computation: It calculates how sensitive the system’s behavior is to changes in its parameters. This is important for understanding how small adjustments to certain parameters affect the system’s output. The program computes these gradients using different methods, including finite differences and automatic differentiation.</p>
+<p>Optimization: It tries to find the best-fitting parameters for the dynamical system by minimizing the difference between the system’s behavior and a target state. In other words, it adjusts the parameters to make the simulated system’s output as close as possible to the desired outcome.</p>
+<p>Printing Results: The program then prints out the estimated parameters that make the model fit the target state most closely. It also shows the initial parameters and the ground truth parameters for comparison.</p>
+<p>In simple terms, this program simulates a dynamic system, like weather patterns or fluid flow, and tries to figure out the rules that govern it. It does this by adjusting parameters in a mathematical model until the model’s predictions match real-world observations as closely as possible.</p>
+<section id="define-dynamical-system">
+<h2>Define dynamical system<a class="headerlink" href="#define-dynamical-system" title="Permalink to this heading">#</a></h2>
+<section id="lorenz-system">
+<h3>Lorenz System<a class="headerlink" href="#lorenz-system" title="Permalink to this heading">#</a></h3>
+<p>The Lorenz system was initially derived from a Oberbeck-Boussinesq approximation. This approximation is
+a coupling of the Navier-Stokes equations with thermal convection. The original problem was a 2D problem
+considering the thermal convection between two parallel horizontal plates. The Lorenz system arises from
+using a truncated Fourier-Galerkin expansion.</p>
+<div class="math notranslate nohighlight">
+\[\frac{dx}{dt}=\sigma(y-x),\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{dy}{dt}=x(\rho-z)-y,\]</div>
+<p>$<span class="math notranslate nohighlight">\(\frac{dz}{dt}=xy-\beta z ,\)</span>$ <br></p>
+<blockquote>
+<div><p>where,
+<span class="math notranslate nohighlight">\(\sigma \,\)</span> is the Prandle number,
+<span class="math notranslate nohighlight">\(\rho \, \)</span> is a scaled value of Rayleigh number and <span class="math notranslate nohighlight">\(\beta \,\)</span> is an aspect ratio</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Lorenz_rhs_func</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">):</span>
+    <span class="n">rho</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">ode_params</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">x</span><span class="p">),</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">z</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="runge-kutta-method">
+<h2>Runge-Kutta Method<a class="headerlink" href="#runge-kutta-method" title="Permalink to this heading">#</a></h2>
+<p>RK method is widely used for solving initial value problems of differential equation by constructing higher order approximation of a differential problem. 4th order variant, or RK4 produces more accurate result than other simpler numerical methods.</p>
+<p>In the code, h is the small time step, <span class="math notranslate nohighlight">\(k_1\)</span> is the slope at the initial value, derived simply from euler’s method.
+<span class="math notranslate nohighlight">\(k_2\)</span> and <span class="math notranslate nohighlight">\(k_3\)</span> both are slope at midpoint of the interval h, but using <span class="math notranslate nohighlight">\(k_1\)</span> and <span class="math notranslate nohighlight">\(k_2\)</span> respectively for calculating. And <span class="math notranslate nohighlight">\(k_4\)</span> is the slope at the end-point. Weighted average of these 4 slopes is used to calculate a more accurate estimation of the endpoint.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># About the decorator: f is a function (not JAX array) and JAX needs to know that so we specify it as &quot;static&quot;</span>
+<span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="k">def</span> <span class="nf">rk4</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">):</span>
+    <span class="n">y_prev</span><span class="p">,</span> <span class="n">t_prev</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">t_crt</span> <span class="o">-</span> <span class="n">t_prev</span>
+    <span class="n">k1</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">y_prev</span><span class="p">,</span> <span class="n">t_prev</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+    <span class="n">k2</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">y_prev</span> <span class="o">+</span> <span class="n">k1</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">t_prev</span> <span class="o">+</span> <span class="n">h</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+    <span class="n">k3</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">y_prev</span> <span class="o">+</span> <span class="n">k2</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">t_prev</span> <span class="o">+</span> <span class="n">h</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+    <span class="n">k4</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">f</span><span class="p">(</span><span class="n">y_prev</span> <span class="o">+</span> <span class="n">k3</span><span class="p">,</span> <span class="n">t_prev</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+    <span class="n">y_crt</span> <span class="o">=</span> <span class="n">y_prev</span> <span class="o">+</span> <span class="mf">1.</span><span class="o">/</span><span class="mi">6</span> <span class="o">*</span> <span class="p">(</span><span class="n">k1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">+</span> <span class="n">k4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">y_crt</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">),</span> <span class="n">y_crt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#ys_ = odeint(rk4, Lorenz_rhs_func, y0, ts, ode_params_opt)</span>
+
+<span class="c1">#stepper is the interative solver, here it is RK4 method</span>
+<span class="c1">#f is funcition to operate; here which is Lorenz function</span>
+<span class="c1">#ts = np.arange(0, 101*dt, dt)</span>
+<span class="c1">#rho, sigma, beta = ode_params</span>
+<span class="c1">#odeint takes system function, ode parameters as input and calculates space values of the system at progressing small time difference</span>
+<span class="k">def</span> <span class="nf">odeint</span><span class="p">(</span><span class="n">stepper</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">stepper_partial</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">):</span>
+        <span class="c1">#stepper function is used to advance the state of an ODE system from one time point to another. Output contains new state, new time</span>
+        <span class="k">return</span> <span class="n">stepper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+
+    <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">stepper_partial</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">t_crt</span><span class="p">)</span>
+        <span class="c1">#print(&quot;state, y&quot;, state, y)</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+    <span class="c1">#print(&quot;ys =&quot;, ys)</span>
+    <span class="k">return</span> <span class="n">ys</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#print(&quot;dumba&quot;)</span>
+<span class="n">y0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">])</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span> <span class="c1"># ts defined for optimization</span>
+<span class="c1">#ts_plot = np.arange(0, 5001*dt, dt) # ts defined for visulization here</span>
+<span class="n">ode_params_gt</span> <span class="o">=</span> <span class="p">[</span><span class="mf">28.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">8.</span><span class="o">/</span><span class="mf">3.</span><span class="p">]</span>
+
+<span class="n">ys_gt_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params_gt</span><span class="p">)</span>
+
+<span class="n">ys_gt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">y0</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">ys_gt_</span><span class="p">))</span>
+<span class="c1">#ys_gt is the array consisting the states or space value over time of Lorenz System</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">ys_gt</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;mpl_toolkits.mplot3d.art3d.Line3D at 0x7f80907a1090&gt;]
+</pre></div>
+</div>
+<img alt="_images/70da7a83e3b0dd48138d7204788c6ffd3bfb9ff59822007ec2ca356e92b5d880.png" src="_images/70da7a83e3b0dd48138d7204788c6ffd3bfb9ff59822007ec2ca356e92b5d880.png" />
+</div>
+</div>
+</section>
+<section id="compute-derivatives-with-several-methods">
+<h2>Compute derivatives with several methods<a class="headerlink" href="#compute-derivatives-with-several-methods" title="Permalink to this heading">#</a></h2>
+<section id="finite-difference-based-gradient-computing-function">
+<h3>Finite Difference Based Gradient Computing Function<a class="headerlink" href="#finite-difference-based-gradient-computing-function" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dt}f(x)=\lim_{h \to 0} \frac{f(x+h)-f(x-h)}{2h} \]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_gradient_fd</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running finite difference&quot;</span><span class="p">)</span>
+    
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="mf">1e-1</span>
+    <span class="n">ode_params_flat</span><span class="p">,</span> <span class="n">unravel</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">(</span><span class="n">ode_params</span><span class="p">)</span>
+
+    <span class="n">grads</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ode_params_flat</span><span class="p">)):</span>
+        <span class="n">ode_params_flat_plus</span> <span class="o">=</span> <span class="n">ode_params_flat</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">ys_plus_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">unravel</span><span class="p">(</span><span class="n">ode_params_flat_plus</span><span class="p">))</span>
+        <span class="n">tau_plus</span> <span class="o">=</span> <span class="n">obj_func</span><span class="p">(</span><span class="n">ys_plus_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+           
+        <span class="n">ode_params_flat_minus</span> <span class="o">=</span> <span class="n">ode_params_flat</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">-</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">ys_minus_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">unravel</span><span class="p">(</span><span class="n">ode_params_flat_minus</span><span class="p">))</span>
+        <span class="n">tau_minus</span> <span class="o">=</span> <span class="n">obj_func</span><span class="p">(</span><span class="n">ys_minus_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau_plus</span> <span class="o">-</span> <span class="n">tau_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">grads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">unravel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grads</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">grads</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a = 1,2,3</span>
+<span class="c1"># print(a)</span>
+<span class="c1"># b, unravel = ravel_pytree(a)</span>
+<span class="c1"># print(b)</span>
+<span class="c1"># c = unravel(b)</span>
+<span class="c1"># print(c)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="automatic-differentiation">
+<h3>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this heading">#</a></h3>
+<p>In automatic differentiation (AD), numerical methods like finite differences are not used for calculating derivatives in each step. Instead, AD relies on symbolic manipulation or dual numbers to compute exact derivatives. This is one of the fundamental differences between AD and numerical differentiation methods, such as finite differences.</p>
+<p>Here’s a brief explanation of how derivatives are calculated in each step of AD without numerical approximation:</p>
+<p>Symbolic Manipulation: In the forward and reverse modes of AD, derivatives are calculated symbolically, not numerically. This means that the elementary operations used to compute the derivative are represented in terms of their symbolic derivatives.</p>
+<p>Dual Numbers: Dual numbers are an extension of real numbers that include an infinitesimal component (ε). In AD, dual numbers are used to simultaneously track the function value and its derivative. For example, if x is a dual number representing a variable, it might be written as x = a + ε * b, where a is the function value, and b is its derivative with respect to x. As you perform operations on dual numbers, AD updates both the function value and its derivative using the rules of elementary calculus.</p>
+<p>Chain Rule: AD applies the chain rule systematically during the calculation of derivatives. When you have a composite function, AD knows how to combine the derivatives of elementary operations using the chain rule to compute the derivative of the entire function.</p>
+<p>By working symbolically with dual numbers and using the chain rule, AD can compute derivatives accurately and efficiently without the need for numerical approximations. This allows it to calculate derivatives at each step of the computation, providing exact gradients or derivatives rather than approximations that would be obtained through numerical methods like finite differences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_gradient_ad_diff_through_loops</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running autodiff, differentiate through loops&quot;</span><span class="p">)</span>
+
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">ys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">ode_params</span><span class="p">):</span>
+        <span class="n">ys_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_func</span><span class="p">(</span><span class="n">ys_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#jax.grad(FUNCTION) is afunction fron jax library which is used for differentiating &quot;FUNCTION&quot; using automatic differentiation</span>
+    <span class="n">grad_func</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="n">grad_func</span><span class="p">(</span><span class="n">ode_params</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">grads</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">obj_func</span><span class="p">(</span><span class="n">yf</span><span class="p">,</span> <span class="n">target_yf</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">yf</span> <span class="o">-</span> <span class="n">target_yf</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">target_yf</span> <span class="o">=</span> <span class="n">ys_gt_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">obj_func_partial</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">yf</span><span class="p">:</span> <span class="n">obj_func</span><span class="p">(</span><span class="n">yf</span><span class="p">,</span> <span class="n">target_yf</span><span class="p">)</span>
+
+<span class="c1"># ode_params_0 = [np.array([26., 8., 2.])]</span>
+<span class="n">ode_params_0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">26.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
+
+<span class="n">ys_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params_0</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">y0</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">ys_</span><span class="p">))</span>
+
+
+<span class="n">grads_fd</span> <span class="o">=</span> <span class="n">compute_gradient_fd</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func_partial</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">ode_params_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grads = </span><span class="si">{</span><span class="n">grads_fd</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">grads_ad_diff_through_loops</span> <span class="o">=</span> <span class="n">compute_gradient_ad_diff_through_loops</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func_partial</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">ode_params_0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grads = </span><span class="si">{</span><span class="n">grads_ad_diff_through_loops</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>running finite difference
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grads = [Array(-7.501421, dtype=float32), Array(16.432524, dtype=float32), Array(-102.63889, dtype=float32)]
+
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>grads = [Array(-7.498921, dtype=float32, weak_type=True), Array(16.436684, dtype=float32, weak_type=True), Array(-102.749664, dtype=float32, weak_type=True)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The case study above demonstrates that both finite difference methods and automatic differentiation (autodiff) yield approximately similar results. In our next simplified example, we will illustrate how autodiff not only achieves greater accuracy but also proves to be more efficient than the finite difference method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.matrixlib</span> <span class="kn">import</span> <span class="n">defmatrix</span>
+<span class="kn">from</span> <span class="nn">jax.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sum_logistic</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
+
+<span class="n">x_small</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">100.</span><span class="p">)</span>
+<span class="c1">#y_small = np.linspace(0,3,100)</span>
+
+<span class="n">derivative_fn</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">)</span>  <span class="c1"># define a function which is the gradient of sum_logistic</span>
+<span class="o">%</span><span class="k">timeit</span> derivative_fn(x_small)
+<span class="nb">print</span><span class="p">(</span><span class="n">derivative_fn</span><span class="p">(</span><span class="n">x_small</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.24 ms ± 49.9 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+[2.50000000e-01 1.96611933e-01 1.04993585e-01 4.51766597e-02
+ 1.76627062e-02 6.64805667e-03 2.46650929e-03 9.10221180e-04
+ 3.35237671e-04 1.23379350e-04 4.53958077e-05 1.67011429e-05
+ 6.14413685e-06 2.26031919e-06 8.31527336e-07 3.05902133e-07
+ 1.12535149e-07 4.13993738e-08 1.52299793e-08 5.60279637e-09
+ 2.06115361e-09 7.58256042e-10 2.78946809e-10 1.02618796e-10
+ 3.77513454e-11 1.38879439e-11 5.10908903e-12 1.87952882e-12
+ 6.91440011e-13 2.54366565e-13 9.35762297e-14 3.44247711e-14
+ 1.26641655e-14 4.65888615e-15 1.71390843e-15 6.30511676e-16
+ 2.31952283e-16 8.53304763e-17 3.13913279e-17 1.15482242e-17
+ 4.24835426e-18 1.56288219e-18 5.74952226e-19 2.11513104e-19
+ 7.78113224e-20 2.86251858e-20 1.05306174e-20 3.87399763e-21
+ 1.42516408e-21 5.24288566e-22 1.92874985e-22 7.09547416e-23
+ 2.61027907e-23 9.60268005e-24 3.53262857e-24 1.29958143e-24
+ 4.78089288e-25 1.75879220e-25 6.47023493e-26 2.38026641e-26
+ 8.75651076e-27 3.22134029e-27 1.18506486e-27 4.35961000e-28
+ 1.60381089e-28 5.90009054e-29 2.17052201e-29 7.98490425e-30
+ 2.93748211e-30 1.08063928e-30 3.97544974e-31 1.46248623e-31
+ 5.38018616e-32 1.97925988e-32 7.28129018e-33 2.67863696e-33
+ 9.85415469e-34 3.62514092e-34 1.33361482e-34 4.90609473e-35
+ 1.80485139e-35 6.63967720e-36 2.44260074e-36 8.98582594e-37
+ 3.30570063e-37 1.21609930e-37 4.47377931e-38 1.64581143e-38
+ 6.05460190e-39 2.22736356e-39 8.19401262e-40 3.01440879e-40
+ 1.10893902e-40 4.07955867e-41 1.50078576e-41 5.52108228e-42
+ 2.03109266e-42 7.47197234e-43 2.74878501e-43 1.01122149e-43]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">first_finite_differences</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+  <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+  <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">v</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))])</span>
+
+<span class="o">%</span><span class="k">timeit</span> first_finite_differences(sum_logistic, x_small)
+<span class="nb">print</span><span class="p">(</span><span class="n">first_finite_differences</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">,</span> <span class="n">x_small</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12.6 ms ± 343 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+[2.49999999e-01 1.96611936e-01 1.04993582e-01 4.51766624e-02
+ 1.76626997e-02 6.64805810e-03 2.46650700e-03 9.10219455e-04
+ 3.35241168e-04 1.23378641e-04 4.53965754e-05 1.66977543e-05
+ 6.14619466e-06 2.25952590e-06 8.31335001e-07 3.05533376e-07
+ 1.13686838e-07 4.26325641e-08 1.42108547e-08 7.10542736e-09
+ 7.10542736e-09 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## optimize(ode_params_0, y0, ts, obj_func_partial, Lorenz_rhs_func, bounds, compute_gradient_fd)</span>
+
+<span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="n">ode_params_0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">compute_gradient_func</span><span class="p">):</span>
+    <span class="n">x_ini</span><span class="p">,</span> <span class="n">unravel</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">(</span><span class="n">ode_params_0</span><span class="p">)</span>
+    <span class="n">obj_vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">######################### Evaluating objective value - step </span><span class="si">{</span><span class="n">objective</span><span class="o">.</span><span class="n">counter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ode_params</span> <span class="o">=</span> <span class="n">unravel</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ys_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">y0</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">ys_</span><span class="p">))</span>
+        <span class="n">obj_val</span> <span class="o">=</span> <span class="n">obj_func</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">objective</span><span class="o">.</span><span class="n">ode_params</span> <span class="o">=</span> <span class="n">ode_params</span>
+        <span class="n">objective</span><span class="o">.</span><span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span>
+        <span class="n">objective</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">ode_params</span>
+
+        <span class="n">objective</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">obj_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj_val</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;obj_val = </span><span class="si">{</span><span class="n">obj_val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ode_params = </span><span class="si">{</span><span class="n">ode_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ys[-1] = </span><span class="si">{</span><span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj_val</span>
+
+    <span class="k">def</span> <span class="nf">derivative</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">ode_params</span> <span class="o">=</span> <span class="n">objective</span><span class="o">.</span><span class="n">ode_params</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">objective</span><span class="o">.</span><span class="n">ys</span>
+
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">compute_gradient_func</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func</span><span class="p">,</span> <span class="n">state_rhs_func</span><span class="p">,</span> <span class="n">ode_params</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;########################################################&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grads = </span><span class="si">{</span><span class="n">grads</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;########################################################&quot;</span><span class="p">)</span>
+
+        <span class="n">grads_ravelled</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ravel_pytree</span><span class="p">(</span><span class="n">grads</span><span class="p">)</span>
+        <span class="c1"># &#39;L-BFGS-B&#39; requires the following conversion, otherwise we get an error message saying</span>
+        <span class="c1"># -- input not fortran contiguous -- expected elsize=8 but got 4</span>
+        <span class="k">return</span> <span class="n">onp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grads_ravelled</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">onp</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">objective</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;disp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>  <span class="c1"># CG or L-BFGS-B or Newton-CG or SLSQP</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">fun</span><span class="o">=</span><span class="n">objective</span><span class="p">,</span>
+                       <span class="n">x0</span><span class="o">=</span><span class="n">x_ini</span><span class="p">,</span>
+                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;SLSQP&#39;</span><span class="p">,</span>
+                       <span class="n">jac</span><span class="o">=</span><span class="n">derivative</span><span class="p">,</span>
+                       <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>
+                       <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">objective</span><span class="o">.</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solving-the-inverse-problem-using-finite-difference-method">
+<h2>Solving the inverse problem using Finite Difference Method<a class="headerlink" href="#solving-the-inverse-problem-using-finite-difference-method" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#just some arrays containing two variables, probably x, y space value, let&#39;s see</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">26.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.</span><span class="o">/</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">8.</span><span class="o">/</span><span class="mf">3.</span><span class="p">]])</span>
+
+<span class="c1">#calling the main optimizing function, let&#39;s go to optimize function, it takes 7 input arguments</span>
+
+
+<span class="n">ode_params_opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span><span class="n">ode_params_0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func_partial</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">compute_gradient_fd</span><span class="p">)</span>
+
+
+
+<span class="c1">#optimized ode paramaters derived from optimize function would be an inpur argument of odeint function</span>
+
+<span class="n">ys_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params_opt</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ground truth parameter values = </span><span class="si">{</span><span class="n">ode_params_gt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ground truth yf = </span><span class="si">{</span><span class="n">target_yf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initial parameter values = </span><span class="si">{</span><span class="n">ode_params_0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimized parameter values = </span><span class="si">{</span><span class="n">ode_params_opt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimized yf = </span><span class="si">{</span><span class="n">ys_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>######################### Evaluating objective value - step 0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>obj_val = 4.860941287589725
+ode_params = [Array(26., dtype=float64), Array(8., dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-10.52796043 -10.17111714  28.86326064]
+running finite difference
+########################################################
+grads = [Array(-6.92301708, dtype=float64), Array(-5.14942292, dtype=float64), Array(18.96074537, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 1
+obj_val = 4.410157956860218
+ode_params = [Array(30., dtype=float64), Array(12., dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.98216602 -9.483049   31.02914495]
+
+######################### Evaluating objective value - step 2
+obj_val = 4.5308537838420157e-05
+ode_params = [Array(28.01884586, dtype=float64), Array(10.01884586, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37604064 -8.36218931 29.36591822]
+running finite difference
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(-0.00014405, dtype=float64), Array(0.00261211, dtype=float64), Array(-0.55425541, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 3
+obj_val = 4.3328425968302456e-05
+ode_params = [Array(28.01976363, dtype=float64), Array(10.01664552, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37537389 -8.36062631 29.36688514]
+running finite difference
+########################################################
+grads = [Array(0.00207508, dtype=float64), Array(5.73364305e-05, dtype=float64), Array(-0.53331802, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 4
+obj_val = 4.106380298681398e-05
+ode_params = [Array(28.01908555, dtype=float64), Array(10.01675259, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37560073 -8.36089563 29.36655643]
+running finite difference
+########################################################
+grads = [Array(0.00147836, dtype=float64), Array(0.00061734, dtype=float64), Array(-0.53849249, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 5
+obj_val = 3.2963945786474016e-05
+ode_params = [Array(28.01660262, dtype=float64), Array(10.01577886, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37619325 -8.36108683 29.3657001 ]
+running finite difference
+########################################################
+grads = [Array(0.00022877, dtype=float64), Array(0.00147527, dtype=float64), Array(-0.54818684, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 6
+obj_val = 2.2305330989485424e-05
+ode_params = [Array(28.01328149, dtype=float64), Array(10.01327813, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37677993 -8.36064907 29.36486189]
+running finite difference
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(-0.00062246, dtype=float64), Array(0.00158433, dtype=float64), Array(-0.55303034, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 7
+obj_val = 1.3800534692919301e-05
+ode_params = [Array(28.01067905, dtype=float64), Array(10.01033877, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37707385 -8.35974055 29.36446013]
+running finite difference
+########################################################
+grads = [Array(-0.00061286, dtype=float64), Array(0.0008233, dtype=float64), Array(-0.55015333, dtype=float64)]
+########################################################
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 1.3800534692919301e-05
+            Iterations: 7
+            Function evaluations: 8
+            Gradient evaluations: 7
+
+Ground truth parameter values = [28.0, 10.0, 2.6666666666666665]
+Ground truth yf = [-9.378615  -8.3570595 29.362402 ]
+
+Initial parameter values = [26.0, 8.0, 2.0]
+Optimized parameter values = [Array(28.01067905, dtype=float64), Array(10.01033877, dtype=float64), Array(2.66666667, dtype=float64)]
+Optimized yf = [-9.37707385 -8.35974055 29.36446013]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solving-the-inverse-problem-using-automatic-differentiation-method">
+<h2>Solving the inverse problem using Automatic Differentiation Method<a class="headerlink" href="#solving-the-inverse-problem-using-automatic-differentiation-method" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#just some arrays containing two variables, probably x, y space value, let&#39;s see</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">26.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.</span><span class="o">/</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">8.</span><span class="o">/</span><span class="mf">3.</span><span class="p">]])</span>
+
+<span class="c1">#calling the main optimizing function, let&#39;s go to optimize function, it takes 7 input arguments</span>
+
+
+<span class="n">ode_params_opt</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span><span class="n">ode_params_0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">obj_func_partial</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">compute_gradient_ad_diff_through_loops</span><span class="p">)</span>
+
+
+
+<span class="c1">#optimized ode paramaters derived from optimize function would be an inpur argument of odeint function</span>
+
+<span class="n">ys_</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">rk4</span><span class="p">,</span> <span class="n">Lorenz_rhs_func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ode_params_opt</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Ground truth parameter values = </span><span class="si">{</span><span class="n">ode_params_gt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ground truth yf = </span><span class="si">{</span><span class="n">target_yf</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Initial parameter values = </span><span class="si">{</span><span class="n">ode_params_0</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimized parameter values = </span><span class="si">{</span><span class="n">ode_params_opt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimized yf = </span><span class="si">{</span><span class="n">ys_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>######################### Evaluating objective value - step 0
+obj_val = 4.860941287589725
+ode_params = [Array(26., dtype=float64), Array(8., dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-10.52796043 -10.17111714  28.86326064]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(-6.91298213, dtype=float64), Array(-5.130735, dtype=float64), Array(19.05076497, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 1
+obj_val = 4.410157956860218
+ode_params = [Array(30., dtype=float64), Array(12., dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.98216602 -9.483049   31.02914495]
+
+######################### Evaluating objective value - step 2
+obj_val = 4.5530123214976924e-05
+ode_params = [Array(28.01889123, dtype=float64), Array(10.01889123, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37603467 -8.36220193 29.36592691]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(0.0015845, dtype=float64), Array(0.00330562, dtype=float64), Array(-0.00253483, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 3
+obj_val = 4.1048447656296876e-05
+ode_params = [Array(28.01911315, dtype=float64), Array(10.01666937, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.37557771 -8.36083868 29.36658988]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(0.00328236, dtype=float64), Array(0.00121416, dtype=float64), Array(0.01374493, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 4
+obj_val = 3.360539721002528e-05
+ode_params = [Array(28.01746655, dtype=float64), Array(10.01439108, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.3756862  -8.3600138  29.36643895]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(0.00358246, dtype=float64), Array(0.00035915, dtype=float64), Array(0.01818499, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 5
+obj_val = 5.834839648128331e-06
+ode_params = [Array(28.00678528, dtype=float64), Array(10.00410361, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.3772091  -8.35732328 29.36434815]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(0.00243928, dtype=float64), Array(-0.00119133, dtype=float64), Array(0.01707735, dtype=float64)]
+########################################################
+
+######################### Evaluating objective value - step 6
+obj_val = 2.3090861427081626e-07
+ode_params = [Array(28.00056728, dtype=float64), Array(9.99978854, dtype=float64), Array(2.66666667, dtype=float64)]
+ys[-1] = [-9.3784044  -8.35675983 29.36271278]
+running autodiff, differentiate through loops
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+grads = [Array(0.0005957, dtype=float64), Array(-0.00058269, dtype=float64), Array(0.00519343, dtype=float64)]
+########################################################
+Optimization terminated successfully    (Exit mode 0)
+            Current function value: 2.3090861427081626e-07
+            Iterations: 6
+            Function evaluations: 7
+            Gradient evaluations: 6
+
+Ground truth parameter values = [28.0, 10.0, 2.6666666666666665]
+Ground truth yf = [-9.378615  -8.3570595 29.362402 ]
+
+Initial parameter values = [26.0, 8.0, 2.0]
+Optimized parameter values = [Array(28.00056728, dtype=float64), Array(9.99978854, dtype=float64), Array(2.66666667, dtype=float64)]
+Optimized yf = [-9.3784044  -8.35675983 29.36271278]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 18 (Speical Topic 2): Phase-field Method</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 20 (Speical Topic 4): Lattice Boltzmann Method</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-dynamical-system">Define dynamical system</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-system">Lorenz System</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runge-kutta-method">Runge-Kutta Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-derivatives-with-several-methods">Compute derivatives with several methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-difference-based-gradient-computing-function">Finite Difference Based Gradient Computing Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-differentiation">Automatic Differentiation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">Optimization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-inverse-problem-using-finite-difference-method">Solving the inverse problem using Finite Difference Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-inverse-problem-using-automatic-differentiation-method">Solving the inverse problem using Automatic Differentiation Method</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Step 15: JAX for high-performance GPU computing &#8212; CFD with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Copy_of_17_JAX_basic';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 16: 2D Diffusion Equation using Numpy and JAX" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html" />
+    <link rel="prev" title="Step 14: Channel Flow with Navier–Stokes" href="16.%20Poiseuille%20channel%20flow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3.Nonlinear%20convection.html">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FCopy_of_17_JAX_basic.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Copy_of_17_JAX_basic.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Step 15: JAX for high-performance GPU computing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplying-matrices">Multiplying Matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-jit-to-speed-up-functions">Using jit() to speed up functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#taking-derivatives-with-grad">Taking derivatives with grad()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-vectorization-with-vmap">Auto-vectorization with vmap()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-think-in-jax">How to Think in JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-vs-numpy">JAX vs. NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key Concepts:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-lax-xla-jax-api-layering">NumPy, lax &amp; XLA: JAX API layering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Key Concepts:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#to-jit-or-not-to-jit">To JIT or not to JIT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Key Concepts:</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-15-jax-for-high-performance-gpu-computing">
+<h1>Step 15: JAX for high-performance GPU computing<a class="headerlink" href="#step-15-jax-for-high-performance-gpu-computing" title="Permalink to this heading">#</a></h1>
+<hr class="docutils" />
+<p>In the upcoming steps, we will explore JAX, a powerful library for Python, and demonstrate how it can be utilized to either modify existing code or develop new code optimized for efficient GPU computing. This step will specifically focus on introducing the fundamental functions of the JAX library.</p>
+<p><a class="reference external" href="https://github.com/google/jax">JAX</a> is NumPy on the CPU, GPU, and TPU, with great automatic differentiation for high-performance computational research. Here is a short video to introduce JAX: <a class="reference external" href="https://www.youtube.com/watch?v=SFKEQs_Hu2c&amp;amp;t=94s">https://www.youtube.com/watch?v=SFKEQs_Hu2c&amp;t=94s</a></p>
+<p><strong>JAX</strong> = <strong>J</strong>IT + <strong>A</strong>utoGrad + <strong>X</strong>LA</p>
+<p><strong>JIT</strong>: just-in-time (JIT) compilation</p>
+<p><strong>AutoGrad</strong>: automatically differentiation</p>
+<p><strong>XLA</strong>: Accelerated Linear Algebra</p>
+<p>To effectively test the JAX code on GPUs, it’s advisable to utilize <strong><a class="reference external" href="https://colab.research.google.com/">Google Colab</a></strong>, which offers access to cloud-based GPU resources. This approach is particularly beneficial if you don’t have local GPU capabilities. However, if you do have access to local GPU resources, they would also serve well for this purpose.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Array([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], dtype=float32)
+</pre></div>
+</div>
+<section id="multiplying-matrices">
+<h2>Multiplying Matrices<a class="headerlink" href="#multiplying-matrices" title="Permalink to this heading">#</a></h2>
+<p>We’ll be generating random data in the following examples. One big difference between NumPy and JAX is how you generate random numbers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[-0.3721109   0.26423115 -0.18252768 -0.7368197  -0.44030377 -0.1521442
+ -0.67135346 -0.5908641   0.73168886  0.5673026 ]
+</pre></div>
+</div>
+<p>Let’s dive right in and multiply two big matrices.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>  <span class="c1"># runs on the GPU</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>6.35 ms ± 2.22 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+<p>We added that block_until_ready because JAX uses asynchronous execution by default (see Asynchronous dispatch).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1.13 s ± 669 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+<p>You can see JAX numpy is much faster than numpy on computing matrix multiplication!</p>
+<p>JAX NumPy functions work on regular NumPy arrays.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax._src.api</span> <span class="kn">import</span> <span class="n">block_until_ready</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>36.7 ms ± 375 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+<p>That’s slower because it has to transfer data to the GPU every time. You can ensure that an NDArray is backed by device memory using device_put().</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">device_put</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">device_put</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>4.6 ms ± 177 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+<p>The output of device_put() still acts like an NDArray, but it only copies values back to the CPU when they’re needed for printing, plotting, saving to disk, branching, etc. The behavior of device_put() is equivalent to the function jit(lambda x: x), but it’s faster.</p>
+<p>JAX is much more than just a GPU-backed NumPy. It also comes with a few program transformations that are useful when writing numerical code. For now, there are three main ones:</p>
+<p>jit(), for speeding up your code</p>
+<p>grad(), for taking derivatives</p>
+<p>vmap(), for automatic vectorization or batching.</p>
+<p>Let’s go over these, one-by-one. We’ll also end up composing these in interesting ways.</p>
+</section>
+<section id="using-jit-to-speed-up-functions">
+<h2>Using jit() to speed up functions<a class="headerlink" href="#using-jit-to-speed-up-functions" title="Permalink to this heading">#</a></h2>
+<p>JAX runs transparently on the GPU or TPU (falling back to CPU if you don’t have one). However, in the above example, JAX is dispatching kernels to the GPU one operation at a time. If we have a sequence of operations, we can use the &#64;jit (just-in-time compile) decorator to compile multiple operations together using XLA (Accelerated Linear Algebra). Let’s try that.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">selu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.67</span><span class="p">,</span> <span class="n">lmbda</span> <span class="o">=</span> <span class="mf">1.05</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10000000</span><span class="p">,))</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">selu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>246 µs ± 8.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div>
+</div>
+<p>The selu() function is called 10 million times. In this senario (a function is called many many times), we can speed it up with &#64;jit, which will jit-compile the first time selu is called and will be cached thereafter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">selu_jit</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">selu</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">selu_jit</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>258 µs ± 4.11 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div>
+</div>
+<p>Another way to use jit is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">selu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.67</span><span class="p">,</span> <span class="n">lmbda</span> <span class="o">=</span> <span class="mf">1.05</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10000000</span><span class="p">,))</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">selu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>258 µs ± 6.57 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div>
+</div>
+</section>
+<section id="taking-derivatives-with-grad">
+<h2>Taking derivatives with grad()<a class="headerlink" href="#taking-derivatives-with-grad" title="Permalink to this heading">#</a></h2>
+<p>In addition to evaluating numerical functions, we also want to transform them. One transformation is automatic differentiation. In JAX, just like in Autograd, you can compute gradients with the grad() function.</p>
+<p>With this configuration,config.update(“jax_enable_x64”, True), JAX will now use float64 precision by default. Please note that the config.update(“jax_enable_x64”, True) command should be called at the beginning of your script before importing JAX or modules that use JAX.</p>
+<p>Also, remember that using double precision comes with increased memory usage and computational cost, especially on GPUs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">numpy.matrixlib</span> <span class="kn">import</span> <span class="n">defmatrix</span>
+
+<span class="k">def</span> <span class="nf">sum_logistic</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
+
+<span class="n">x_small</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">100.</span><span class="p">)</span>
+<span class="n">y_small</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">derivative_fn</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">)</span>  <span class="c1"># define a function which is the gradient of sum_logistic</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">derivative_fn</span><span class="p">(</span><span class="n">x_small</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">derivative_fn</span><span class="p">(</span><span class="n">x_small</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;ipython-input-12-bce2302fe8d6&gt;:1: DeprecationWarning: Accessing jax.config via the jax.config submodule is deprecated.
+  from jax.config import config
+
+
+7.21 ms ± 391 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+[2.50000000e-01 1.96611933e-01 1.04993585e-01 4.51766597e-02
+ 1.76627062e-02 6.64805667e-03 2.46650929e-03 9.10221180e-04
+ 3.35237671e-04 1.23379350e-04 4.53958077e-05 1.67011429e-05
+ 6.14413685e-06 2.26031919e-06 8.31527336e-07 3.05902133e-07
+ 1.12535149e-07 4.13993738e-08 1.52299793e-08 5.60279637e-09
+ 2.06115361e-09 7.58256042e-10 2.78946809e-10 1.02618796e-10
+ 3.77513454e-11 1.38879439e-11 5.10908903e-12 1.87952882e-12
+ 6.91440011e-13 2.54366565e-13 9.35762297e-14 3.44247711e-14
+ 1.26641655e-14 4.65888615e-15 1.71390843e-15 6.30511676e-16
+ 2.31952283e-16 8.53304763e-17 3.13913279e-17 1.15482242e-17
+ 4.24835426e-18 1.56288219e-18 5.74952226e-19 2.11513104e-19
+ 7.78113224e-20 2.86251858e-20 1.05306174e-20 3.87399763e-21
+ 1.42516408e-21 5.24288566e-22 1.92874985e-22 7.09547416e-23
+ 2.61027907e-23 9.60268005e-24 3.53262857e-24 1.29958143e-24
+ 4.78089288e-25 1.75879220e-25 6.47023493e-26 2.38026641e-26
+ 8.75651076e-27 3.22134029e-27 1.18506486e-27 4.35961000e-28
+ 1.60381089e-28 5.90009054e-29 2.17052201e-29 7.98490425e-30
+ 2.93748211e-30 1.08063928e-30 3.97544974e-31 1.46248623e-31
+ 5.38018616e-32 1.97925988e-32 7.28129018e-33 2.67863696e-33
+ 9.85415469e-34 3.62514092e-34 1.33361482e-34 4.90609473e-35
+ 1.80485139e-35 6.63967720e-36 2.44260074e-36 8.98582594e-37
+ 3.30570063e-37 1.21609930e-37 4.47377931e-38 1.64581143e-38
+ 6.05460190e-39 2.22736356e-39 8.19401262e-40 3.01440879e-40
+ 1.10893902e-40 4.07955867e-41 1.50078576e-41 5.52108228e-42
+ 2.03109266e-42 7.47197234e-43 2.74878501e-43 1.01122149e-43]
+</pre></div>
+</div>
+<p>Let’s verify with finite differences that our result is correct.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">first_finite_differences</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+  <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">v</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">jnp</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))])</span>
+
+<span class="o">%</span><span class="n">timeit</span> <span class="n">first_finite_differences</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">,</span> <span class="n">x_small</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">first_finite_differences</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">,</span> <span class="n">x_small</span><span class="p">))</span>
+<span class="c1"># x = jnp.arange(10)</span>
+<span class="c1"># for v in jnp.eye(len(x)):</span>
+<span class="c1">#   print(v)</span>
+<span class="c1"># jnp.array([v for v in jnp.eye(len(x))])</span>
+
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>208 ms ± 13.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+[2.49999999e-01 1.96611936e-01 1.04993582e-01 4.51766624e-02
+ 1.76627069e-02 6.64805810e-03 2.46650700e-03 9.10219455e-04
+ 3.35241168e-04 1.23385746e-04 4.53965754e-05 1.66977543e-05
+ 6.14619466e-06 2.25952590e-06 8.31335001e-07 3.05533376e-07
+ 1.13686838e-07 4.26325641e-08 1.42108547e-08 7.10542736e-09
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00]
+</pre></div>
+</div>
+<p>The results are almost the same, but you can see the bulit-in function grad() is much faster and has higher accuracy.</p>
+<p>Taking derivatives is as easy as calling grad(). grad() and jit() compose and can be mixed arbitrarily. In the above example we jitted sum_logistic and then took its derivative. We can go further:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">sum_logistic</span><span class="p">)))))(</span><span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-0.03532558051623561
+</pre></div>
+</div>
+<p>For more advanced autodiff, you can use jax.vjp() for reverse-mode vector-Jacobian products and jax.jvp() for forward-mode Jacobian-vector products. The two can be composed arbitrarily with one another, and with other JAX transformations. Here’s one way to compose them to make a function that efficiently computes full Hessian matrices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jacfwd</span><span class="p">,</span> <span class="n">jacrev</span>
+<span class="k">def</span> <span class="nf">hessian</span><span class="p">(</span><span class="n">fun</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jit</span><span class="p">(</span><span class="n">jacfwd</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fun</span><span class="p">)))</span>
+</pre></div>
+</div>
+</section>
+<section id="auto-vectorization-with-vmap">
+<h2>Auto-vectorization with vmap()<a class="headerlink" href="#auto-vectorization-with-vmap" title="Permalink to this heading">#</a></h2>
+<p>JAX has one more transformation in its API that you might find useful: vmap(), the vectorizing map. It has the familiar semantics of mapping a function along array axes, but instead of keeping the loop on the outside, it pushes the loop down into a function’s primitive operations for better performance. When composed with jit(), it can be just as fast as adding the batch dimensions by hand.</p>
+<p>We’re going to work with a simple example, and promote matrix-vector products into matrix-matrix products using vmap(). Although this is easy to do by hand in this specific case, the same technique can apply to more complicated functions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">batched_x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">apply_matrix</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># if axis = 0, jnp.dot(A,z) will have an error</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">x</span><span class="p">))</span>  <span class="c1"># jnp.dot is matrix multiplication. If x is a vector, it represents Ax</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>           <span class="c1"># A*x: A = [a1,a2,a3,a4] A*x = [a1*x1, a2*x2, a3*x3, a4*x4]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">z</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">z</span><span class="p">)</span>         <span class="c1"># A @ z is matrix multiplication</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[0 1 2 3]
+[[-0.53389115  0.84179134  0.81155729  0.05308707]
+ [ 0.72478811 -0.53911566 -0.21932127  0.5509203 ]
+ [ 0.16972549  1.19717228 -1.06094203  0.28213284]
+ [-1.05431656  1.01875438 -0.42167228 -2.58898201]]
+[ 2.62416712  0.67500269 -0.07831328 -7.59153623]
+[[-0.          0.84179134  1.62311457  0.15926121]
+ [ 0.         -0.53911566 -0.43864254  1.65276089]
+ [ 0.          1.19717228 -2.12188407  0.84639851]
+ [-0.          1.01875438 -0.84334457 -7.76694604]]
+[[0 0]
+ [1 1]
+ [2 2]
+ [3 3]]
+[[ 2.62416712  2.62416712]
+ [ 0.67500269  0.67500269]
+ [-0.07831328 -0.07831328]
+ [-7.59153623 -7.59153623]]
+[[ 2.62416712  2.62416712]
+ [ 0.67500269  0.67500269]
+ [-0.07831328 -0.07831328]
+ [-7.59153623 -7.59153623]]
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mat</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="n">batched_x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">apply_matrix</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<span class="c1">#apply_matrix(batched_x) #result in an error</span>
+</pre></div>
+</div>
+<p>Given a function such as apply_matrix, we can loop over a batch dimension in Python, but usually the performance of doing so is poor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">naively_batched_apply_matrix</span><span class="p">(</span><span class="n">v_batched</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">apply_matrix</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_batched</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Naively batched&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">naively_batched_apply_matrix</span><span class="p">(</span><span class="n">batched_x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Naively batched
+4.1 ms ± 344 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+<p>We know how to batch this operation manually. In this case, jnp.dot handles extra batch dimensions transparently.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">batched_apply_matrix</span><span class="p">(</span><span class="n">v_batched</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_batched</span><span class="p">,</span> <span class="n">mat</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manually batched&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">batched_apply_matrix</span><span class="p">(</span><span class="n">batched_x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Manually batched
+131 µs ± 28.4 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div>
+</div>
+<p>However, suppose we had a more complicated function without batching support. We can use vmap() to add batching support automatically.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">vmap_batched_apply_matrix</span><span class="p">(</span><span class="n">v_batched</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="n">apply_matrix</span><span class="p">)(</span><span class="n">v_batched</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Auto-vectorized with vmap&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="n">timeit</span> <span class="n">vmap_batched_apply_matrix</span><span class="p">(</span><span class="n">batched_x</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Auto-vectorized with vmap
+147 µs ± 56.7 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+</pre></div>
+</div>
+<p>Of course, vmap() can be arbitrarily composed with jit(), grad(), and any other JAX transformation.</p>
+<p>This is just a taste of what JAX can do. We’re really excited to see what you do with it!</p>
+</section>
+<section id="how-to-think-in-jax">
+<h2>How to Think in JAX<a class="headerlink" href="#how-to-think-in-jax" title="Permalink to this heading">#</a></h2>
+<p>JAX provides a simple and powerful API for writing accelerated numerical code, but working effectively in JAX sometimes requires extra consideration. This document is meant to help build a ground-up understanding of how JAX operates, so that you can use it more effectively.</p>
+</section>
+<section id="jax-vs-numpy">
+<h2>JAX vs. NumPy<a class="headerlink" href="#jax-vs-numpy" title="Permalink to this heading">#</a></h2>
+<section id="key-concepts">
+<h3>Key Concepts:<a class="headerlink" href="#key-concepts" title="Permalink to this heading">#</a></h3>
+<p>JAX provides a NumPy-inspired interface for convenience.</p>
+<p>Through duck-typing, JAX arrays can often be used as drop-in replacements of NumPy arrays.</p>
+<p>Unlike NumPy arrays, JAX arrays are always immutable.</p>
+<p>NumPy provides a well-known, powerful API for working with numerical data. For convenience, JAX provides jax.numpy which closely mirrors the numpy API and provides easy entry into JAX. Almost anything that can be done with numpy can be done with jax.numpy.</p>
+</section>
+</section>
+<section id="numpy-lax-xla-jax-api-layering">
+<h2>NumPy, lax &amp; XLA: JAX API layering<a class="headerlink" href="#numpy-lax-xla-jax-api-layering" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Key Concepts:<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>jax.numpy is a high-level wrapper that provides a familiar interface.</p>
+<p>jax.lax is a lower-level API that is stricter and often more powerful.</p>
+<p>All JAX operations are implemented in terms of operations in XLA – the Accelerated Linear Algebra compiler.</p>
+<p>If you look at the source of jax.numpy, you’ll see that all the operations are eventually expressed in terms of functions defined in jax.lax. You can think of jax.lax as a stricter, but often more powerful, API for working with multi-dimensional arrays.</p>
+</section>
+</section>
+<section id="to-jit-or-not-to-jit">
+<h2>To JIT or not to JIT<a class="headerlink" href="#to-jit-or-not-to-jit" title="Permalink to this heading">#</a></h2>
+<section id="id2">
+<h3>Key Concepts:<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>By default JAX executes operations one at a time, in sequence.</p>
+<p>Using a just-in-time (JIT) compilation decorator, sequences of operations can be optimized together and run at once.</p>
+<p>Not all JAX code can be JIT compiled, as it requires array shapes to be static &amp; known at compile time.</p>
+<p>The fact that all JAX operations are expressed in terms of XLA allows JAX to use the XLA compiler to execute blocks of code very efficiently.</p>
+<p><strong>As a general rule of thumb, apply JIT (Just-In-Time) compilation only to functions that will be executed repeatedly in the program.</strong></p>
+<p>I encourage exploring further tutorials on JAX available on their <a class="reference external" href="https://jax.readthedocs.io/en/latest/">official website</a> to deepen your understanding of its features and usage tips. However, for now, you have sufficient knowledge to proceed with converting our existing code to a JAX-enhanced version.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="16.%20Poiseuille%20channel%20flow.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step 14: Channel Flow with Navier–Stokes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 16: 2D Diffusion Equation using Numpy and JAX</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplying-matrices">Multiplying Matrices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-jit-to-speed-up-functions">Using jit() to speed up functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#taking-derivatives-with-grad">Taking derivatives with grad()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-vectorization-with-vmap">Auto-vectorization with vmap()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-think-in-jax">How to Think in JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-vs-numpy">JAX vs. NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key Concepts:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-lax-xla-jax-api-layering">NumPy, lax &amp; XLA: JAX API layering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Key Concepts:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#to-jit-or-not-to-jit">To JIT or not to JIT</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Key Concepts:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zhengtao Gan
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

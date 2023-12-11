@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Step 2: Nonlinear Convection &#8212; CFD with Python</title>
+    <title>Step 2: Nonlinear Convection and Upwind Scheme &#8212; CFD with Python</title>
   
   
   
@@ -67,6 +67,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '3.Nonlinear convection';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 3: Convergence and the CFL Condition" href="4.%20CFL%20condition.html" />
     <link rel="prev" title="Step 1: 1-D Linear Convection" href="2.1D%20linear%20convection.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -154,8 +155,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="_static/ZGAN.jpg" class="logo__image only-light" alt="CFD with Python - Home"/>
-    <script>document.write(`<img src="_static/ZGAN.jpg" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
+    <img src="_static/courselogo.png" class="logo__image only-light" alt="CFD with Python - Home"/>
+    <script>document.write(`<img src="_static/courselogo.png" class="logo__image only-dark" alt="CFD with Python - Home"/>`);</script>
   
   
 </a></div>
@@ -165,18 +166,34 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    Welcome to your Jupyter Book
+                    Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
-<li class="toctree-l1"><a class="reference internal" href="1.Python%20Numpy.html">Python Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.intro_CFD.html">Step 0: Introduction of Computational Fluid Dynamics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.1D%20linear%20convection.html">Step 1: 1-D Linear Convection</a></li>
-
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 2: Nonlinear Convection</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Step 2: Nonlinear Convection and Upwind Scheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4.%20CFL%20condition.html">Step 3: Convergence and the CFL Condition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5.%201D%20diffusion%20equation.html">Step 4: Diffusion Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6.%20Burgers%27%20equation.html">Step 5: Burgers’ Equation in 1-D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7.%20Array_Operations_with_NumPy.html">Step 6: Array Operations with NumPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8.%202D%20Linear%20Convection.html">Step 7: 2D Linear Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9.%202D%20nonlinear%20convection.html">Step 8: 2-D Convection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10.%202D%20Diffusion.html">Step 9: 2D Diffusion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11.%20Burgers%27%20equation.html">Step 10: Burgers’ Equation in 2D</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13.%202D%20Laplace%20equation.html">Step 11: 2D Laplace Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.%202D%20Poisson%20equation.html">Step 12: 2D Poisson Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.%20Cavity%20flow%20with%20Naiver-Stokes%20equation.html">Step 13.1: Cavity Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.1.%20Cavity%20flow%20with%20upwind%20scheme.html">Step 13.2: Cavity Flow with Upwind Sheme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15.2.%20Cavity%20flow%20with%20Chorin%27s%20Projection.html">Step 13.3: Cavity flow with Chorin’s Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16.%20Poiseuille%20channel%20flow.html">Step 14: Channel Flow with Navier–Stokes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_17_JAX_basic.html">Step 15: JAX for high-performance GPU computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Copy_of_23_2D_Diffusion_Numpy_and_JAX.html">Step 16: 2D Diffusion Equation using Numpy and JAX</a></li>
+<li class="toctree-l1"><a class="reference internal" href="S1.%202D%20Poisson%20equation-implicit%20and%20explicit%20JAX%20method.html">Step 17 (Speical Topic 1): Implicit Solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Konayashi_1993-main/jax_version/kobayashi_aniso_jax_ZGAN-2.html">Step 18 (Speical Topic 2): Phase-field Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25.%20Optimization%20of%20a%20dynamical%20system.html">Step 19 (Speical Topic 3): Optimization of Dynamical Systems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26.LBM/26.%20LBM%20Poiseuille%20flow-2.html">Step 20 (Speical Topic 4): Lattice Boltzmann Method</a></li>
 </ul>
 
     </div>
@@ -360,7 +377,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Step 2: Nonlinear Convection</h1>
+    <h1>Step 2: Nonlinear Convection and Upwind Scheme</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -374,8 +391,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="step-2-nonlinear-convection">
-<h1>Step 2: Nonlinear Convection<a class="headerlink" href="#step-2-nonlinear-convection" title="Permalink to this heading">#</a></h1>
+  <section id="step-2-nonlinear-convection-and-upwind-scheme">
+<h1>Step 2: Nonlinear Convection and Upwind Scheme<a class="headerlink" href="#step-2-nonlinear-convection-and-upwind-scheme" title="Permalink to this heading">#</a></h1>
 <hr class="docutils" />
 <p>Now we’re going to implement nonlinear convection using the same methods as in step 1.  The 1D convection equation is:</p>
 <div class="math notranslate nohighlight">
@@ -401,10 +418,10 @@ document.write(`
 <span class="c1">#dt = .025  #dt is the amount of time each timestep covers (delta t)</span>
 
 <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span>                         <span class="c1">#as before, we initialize u with every value equal to 1.</span>
-<span class="n">u</span><span class="p">[:]</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">.5</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  <span class="c1">#then set u = 2 between 0.5 and 1 as per our I.C.s</span>
+<span class="n">u</span><span class="p">[:]</span><span class="o">=</span> <span class="mi">1</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">.5</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1">#then set u = 2 between 0.5 and 1 as per our I.C.s</span>
 
-<span class="n">CFL</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">CFL</span> <span class="o">=</span> <span class="mf">0.9</span>
 <span class="n">dt</span> <span class="o">=</span> <span class="n">CFL</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>
 
 <span class="n">un</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span> <span class="c1">#initialize our placeholder array un, to hold the time-stepped solution</span>
@@ -420,13 +437,145 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" src="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" />
+<img alt="_images/102c02b8887eb35d3620ecfc94e7c95b3fad846ef70ecc14f230ba7ca67b0921.png" src="_images/102c02b8887eb35d3620ecfc94e7c95b3fad846ef70ecc14f230ba7ca67b0921.png" />
 </div>
 </div>
-<p>The code snippet below is <em>unfinished</em>. We have copied over the line from <span class="xref myst">Step 1</span> that executes the time-stepping update. Can you edit this code to execute the nonlinear convection instead?</p>
+<p>The code snippet below is to execute the nonlinear convection:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>  <span class="c1">#iterate through time</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">##copy the existing values of u into un</span>
+    
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1">##now we&#39;ll iterate through the u array</span>
+        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>        
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">)</span> <span class="c1">##Plot the results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/53c2389543f992b1bddf3a746623cdda4cfdd31b981d42115283efac51185725.png" src="_images/53c2389543f992b1bddf3a746623cdda4cfdd31b981d42115283efac51185725.png" />
+<img alt="_images/12c6407fb5c163f67df74a99c3abfad271464a14681af7de76d75b2cda294f13.png" src="_images/12c6407fb5c163f67df74a99c3abfad271464a14681af7de76d75b2cda294f13.png" />
+<img alt="_images/13b27cb9b75a35e6472dd00b5267cb7db792897094966e2848089db01d30129e.png" src="_images/13b27cb9b75a35e6472dd00b5267cb7db792897094966e2848089db01d30129e.png" />
+<img alt="_images/d2a0ce8a49d74aed6dd42a4ad329ab305963bc0849edb7cf26664b36cfe9386e.png" src="_images/d2a0ce8a49d74aed6dd42a4ad329ab305963bc0849edb7cf26664b36cfe9386e.png" />
+<img alt="_images/69c9bac58f50f1ee2d50e7cad0a1ea265cbbd286925c58e33eef46c53d42ed77.png" src="_images/69c9bac58f50f1ee2d50e7cad0a1ea265cbbd286925c58e33eef46c53d42ed77.png" />
+<img alt="_images/465398f75075328c9fb1177a9dd9e5945b93d7329980152229f98fcd479eb3d6.png" src="_images/465398f75075328c9fb1177a9dd9e5945b93d7329980152229f98fcd479eb3d6.png" />
+<img alt="_images/8450e1455b718451c90ffa74d3a9dc8fa1a153f4bd2159f3be96cc2d11e5347b.png" src="_images/8450e1455b718451c90ffa74d3a9dc8fa1a153f4bd2159f3be96cc2d11e5347b.png" />
+<img alt="_images/c56582f004e1e525925d5a0c028f6329d1683e411366a7956c6b1c74c8cbda42.png" src="_images/c56582f004e1e525925d5a0c028f6329d1683e411366a7956c6b1c74c8cbda42.png" />
+<img alt="_images/b51de776d9cf0760d80f6d5ac8e298db4c94395b38d0365e60443f0c02df49f9.png" src="_images/b51de776d9cf0760d80f6d5ac8e298db4c94395b38d0365e60443f0c02df49f9.png" />
+<img alt="_images/96798cec17a5fcd6e0f34cbd6b129731bc8d76314e77bf069135d4064ce8e20d.png" src="_images/96798cec17a5fcd6e0f34cbd6b129731bc8d76314e77bf069135d4064ce8e20d.png" />
+<img alt="_images/5567469398254292fb10d9474ef9ee77b2a097612b61f8b975b60e831b8754ef.png" src="_images/5567469398254292fb10d9474ef9ee77b2a097612b61f8b975b60e831b8754ef.png" />
+<img alt="_images/972b942b7b61ad788b8033c43e75fa755ea16ff1e1526a5c45e25f0b6b0f41b1.png" src="_images/972b942b7b61ad788b8033c43e75fa755ea16ff1e1526a5c45e25f0b6b0f41b1.png" />
+<img alt="_images/47caf49820ccc5ec0e702a4d26de7306ad04e1026c44baab53d79acd4d641546.png" src="_images/47caf49820ccc5ec0e702a4d26de7306ad04e1026c44baab53d79acd4d641546.png" />
+<img alt="_images/c074a12ce20e930dda7a2ad840336986aade99aeb780b624a3164be9e0b13b6b.png" src="_images/c074a12ce20e930dda7a2ad840336986aade99aeb780b624a3164be9e0b13b6b.png" />
+<img alt="_images/d24dab7947af007aad537e38f816bbff1a4915149ecce3ed14a53b636a37ce26.png" src="_images/d24dab7947af007aad537e38f816bbff1a4915149ecce3ed14a53b636a37ce26.png" />
+<img alt="_images/addd1213a18d5bdafcadf7d9834f00ebb704059fbad0bdaf56fdacc4b8f30f63.png" src="_images/addd1213a18d5bdafcadf7d9834f00ebb704059fbad0bdaf56fdacc4b8f30f63.png" />
+<img alt="_images/5f9e99b5bc8b2cfb2aac62909410635719047fddcb2d1d7fceed3ca12a7cebad.png" src="_images/5f9e99b5bc8b2cfb2aac62909410635719047fddcb2d1d7fceed3ca12a7cebad.png" />
+<img alt="_images/aadba90d52a34c844d0362b3bf882576caaac6a89a16b34534a4d2f71c373894.png" src="_images/aadba90d52a34c844d0362b3bf882576caaac6a89a16b34534a4d2f71c373894.png" />
+<img alt="_images/c8a11ae684291e32fdbf86a974c35460ef97a4c2f6ffbaa0bec52fea9e7d3101.png" src="_images/c8a11ae684291e32fdbf86a974c35460ef97a4c2f6ffbaa0bec52fea9e7d3101.png" />
+<img alt="_images/0f8b4122bc6811bdf9ba30d9fe69d0bf1ed3bea02422c9c1e6b2f350b4a9bd6a.png" src="_images/0f8b4122bc6811bdf9ba30d9fe69d0bf1ed3bea02422c9c1e6b2f350b4a9bd6a.png" />
+</div>
+</div>
+<p>What do you observe about the evolution of the hat function under the nonlinear convection equation? What happens when you change the numerical parameters and run again?</p>
+<p>For example, what happens if we switch our initial values from positive to negative?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">[:]</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">.5</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  <span class="c1">#then set u = 2 between 0.5 and 1 as per our I.C.s</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" src="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>  <span class="c1">#iterate through time</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">##copy the existing values of u into un</span>
+    
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1">##now we&#39;ll iterate through the u array</span>
+        <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">*</span> <span class="p">(</span><span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>        
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">)</span> <span class="c1">##Plot the results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/09fd63209cf8050ee30e33f8e9283bee0c0111c0c68e0d6fe533ed5e9373677d.png" src="_images/09fd63209cf8050ee30e33f8e9283bee0c0111c0c68e0d6fe533ed5e9373677d.png" />
+<img alt="_images/30c678a913b0b394ff26f2de8a10105dea753e9b7c847fedb23d7e8963c6c376.png" src="_images/30c678a913b0b394ff26f2de8a10105dea753e9b7c847fedb23d7e8963c6c376.png" />
+<img alt="_images/587a498e0322c73dc6a251c2b1533c1af2ff5c2df2420a56c440a801cb64c805.png" src="_images/587a498e0322c73dc6a251c2b1533c1af2ff5c2df2420a56c440a801cb64c805.png" />
+<img alt="_images/23bb704ba84986df87f019fd31a66065506a0a22d16a9795469d4bef8845c6c3.png" src="_images/23bb704ba84986df87f019fd31a66065506a0a22d16a9795469d4bef8845c6c3.png" />
+<img alt="_images/c54baca06a7a61eef613c98a9f8c511b3e5b3ae4c3c3ab9f9e415b47a52ca24c.png" src="_images/c54baca06a7a61eef613c98a9f8c511b3e5b3ae4c3c3ab9f9e415b47a52ca24c.png" />
+<img alt="_images/9aca12a83bc48de8d90986c2ca4e46cef426394c6770a79910b3aa7a0bd48d88.png" src="_images/9aca12a83bc48de8d90986c2ca4e46cef426394c6770a79910b3aa7a0bd48d88.png" />
+<img alt="_images/d4861e6949b9b5a12164e2604488bfbe96268a501db281e868a60d217e5130a0.png" src="_images/d4861e6949b9b5a12164e2604488bfbe96268a501db281e868a60d217e5130a0.png" />
+<img alt="_images/4aabe6c4b821d5dff887671ed5e9aa5d313b0f68c74666cf9d4abdd7a7c12b98.png" src="_images/4aabe6c4b821d5dff887671ed5e9aa5d313b0f68c74666cf9d4abdd7a7c12b98.png" />
+<img alt="_images/d158d496e3cbe24791dbae6115bbadd393a2e49b16fc499e8cebb0e997c14ecb.png" src="_images/d158d496e3cbe24791dbae6115bbadd393a2e49b16fc499e8cebb0e997c14ecb.png" />
+<img alt="_images/3eeb1c60d0f16de76eb0bbf43fa35a5a3ebd351660983be13f1a8fc7f4078ab4.png" src="_images/3eeb1c60d0f16de76eb0bbf43fa35a5a3ebd351660983be13f1a8fc7f4078ab4.png" />
+<img alt="_images/a380fe4bed8fea80e0f26b8867943e319af8dd7a7f97ee9fea5acda25c6a6d0f.png" src="_images/a380fe4bed8fea80e0f26b8867943e319af8dd7a7f97ee9fea5acda25c6a6d0f.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: overflow encountered in scalar multiply
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/d2503c5bbde922dca69353db8b905a4e3881d811e5d6c950b46b8eb1682a6e0b.png" src="_images/d2503c5bbde922dca69353db8b905a4e3881d811e5d6c950b46b8eb1682a6e0b.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: invalid value encountered in scalar subtract
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/e7bbe4f37dfedf761bc0b086fc2cf81a7f0b76305da9482c405d0ac196a54223.png" src="_images/e7bbe4f37dfedf761bc0b086fc2cf81a7f0b76305da9482c405d0ac196a54223.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: overflow encountered in scalar multiply
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/dad594917ff5b039c5fac78d8a206ce27b92b81f8594c2b4136358374048251a.png" src="_images/dad594917ff5b039c5fac78d8a206ce27b92b81f8594c2b4136358374048251a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: invalid value encountered in scalar subtract
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: overflow encountered in scalar multiply
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/ace72c6837aa3e3b9e27380f094650311b71e92a837dd44613d7d4e49421be39.png" src="_images/ace72c6837aa3e3b9e27380f094650311b71e92a837dd44613d7d4e49421be39.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: invalid value encountered in scalar subtract
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: overflow encountered in scalar multiply
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/fc7eb7bd46deb4ed93d79f18134b1878a1a046bae0a8fdc4f514b09bb0e52556.png" src="_images/fc7eb7bd46deb4ed93d79f18134b1878a1a046bae0a8fdc4f514b09bb0e52556.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: overflow encountered in scalar multiply
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: invalid value encountered in scalar subtract
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/2a5f4b498dee3278470d91d15b07e9d27065417b0051b17fd139be0e71353c1d.png" src="_images/2a5f4b498dee3278470d91d15b07e9d27065417b0051b17fd139be0e71353c1d.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_18222/2793021359.py:6: RuntimeWarning: invalid value encountered in scalar subtract
+  u[i] = un[i] - un[i] * dt / dx * (un[i] - un[i-1])
+</pre></div>
+</div>
+<img alt="_images/da53db20c29c9c66e2e0a8e727c212095d75affe8da59e26d48ac008bc12c075.png" src="_images/da53db20c29c9c66e2e0a8e727c212095d75affe8da59e26d48ac008bc12c075.png" />
+<img alt="_images/c7c3ee51826906d8aa6744c89b791be670059454edbcd7f5ba515b4d5f297ef6.png" src="_images/c7c3ee51826906d8aa6744c89b791be670059454edbcd7f5ba515b4d5f297ef6.png" />
+<img alt="_images/7ce876ee92add40efd28ed2b8114c9add943d171ecc18c9328393c305e87b519.png" src="_images/7ce876ee92add40efd28ed2b8114c9add943d171ecc18c9328393c305e87b519.png" />
+</div>
+</div>
+<p><strong>What causes the divergence in computational results when a negative initial condition is applied?</strong></p>
+<p>The divergence in results when using a negative initial condition in your computational model can be attributed to the limitations of the backward scheme used for discretizing the convection term. The backward scheme, represented by \(\frac{u_i^n - u_{i-1}^n}{\Delta x}\), is efficient for positive convection coefficients. However, it becomes less effective when dealing with negative nonlinear convection coefficients, like \(u^n_i\) in your case.</p>
+<p>To address this issue, you can introduce the upwind scheme for discretizing the convection term. The upwind scheme is designed to handle both positive and negative convection coefficients effectively. Its fundamental idea is to adjust the discretization direction based on the sign of the convection coefficient. When the convection coefficient is positive, the upwind scheme uses values from the upstream (or ‘upwind’) side of the computational domain for discretization, similar to the backward scheme. Conversely, when the convection coefficient is negative, it uses values from the downstream (or ‘downwind’) side, similar to the forward scheme.</p>
+<p>Here is the code implementation of the upwind scheme:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">[:]</span><span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">u</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">.5</span> <span class="o">/</span> <span class="n">dx</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">dx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>  <span class="c1">#then set u = 2 between 0.5 and 1 as per our I.C.s</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">u</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span><span class="p">):</span>  <span class="c1">#iterate through time</span>
     <span class="n">un</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">##copy the existing values of u into un</span>
     
     <span class="n">F</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">+</span><span class="mf">1e-6</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">+</span><span class="mf">1e-6</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
@@ -449,29 +598,29 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/37f070b4f8777a2805462c06d3b250b28971976bff307909f27c34923591786b.png" src="_images/37f070b4f8777a2805462c06d3b250b28971976bff307909f27c34923591786b.png" />
-<img alt="_images/72dd3fab0cb4770b743a8d3c786492836bd28a7e89e991740adcd0b75f8d915a.png" src="_images/72dd3fab0cb4770b743a8d3c786492836bd28a7e89e991740adcd0b75f8d915a.png" />
-<img alt="_images/b1e5126709257d9000d1eef0b23e23ebc95640ed7e8d807f941872910e02f839.png" src="_images/b1e5126709257d9000d1eef0b23e23ebc95640ed7e8d807f941872910e02f839.png" />
-<img alt="_images/c8da95ab64d653799dc3143406d4bac7f36480949b0ad7143efd4e087144b30f.png" src="_images/c8da95ab64d653799dc3143406d4bac7f36480949b0ad7143efd4e087144b30f.png" />
-<img alt="_images/f87eb7792617ead6f22e07013ce2ae6684d71abad35ee6235cfcff084634b765.png" src="_images/f87eb7792617ead6f22e07013ce2ae6684d71abad35ee6235cfcff084634b765.png" />
-<img alt="_images/c3b9878a6a9940f2d73062ac0c6812a9e1d1fd62c5462305ad028cf94dac0cda.png" src="_images/c3b9878a6a9940f2d73062ac0c6812a9e1d1fd62c5462305ad028cf94dac0cda.png" />
-<img alt="_images/bd1deea988f78bcbd51943cf1115754de62b022779bcee0e6a092d395512c64f.png" src="_images/bd1deea988f78bcbd51943cf1115754de62b022779bcee0e6a092d395512c64f.png" />
-<img alt="_images/df76126d8aca5abbcb0834dd256e89f3d3a5ceda6496d7e0afd18a542827fd5f.png" src="_images/df76126d8aca5abbcb0834dd256e89f3d3a5ceda6496d7e0afd18a542827fd5f.png" />
-<img alt="_images/08666ef7400e53b8d7d49f161fef076255fd61ecb022a146ca0c5310926971e6.png" src="_images/08666ef7400e53b8d7d49f161fef076255fd61ecb022a146ca0c5310926971e6.png" />
-<img alt="_images/35828c6e50f3f7b351b5d93391ac2bb42413d8ece5c9ba076f502f0d6c29ea64.png" src="_images/35828c6e50f3f7b351b5d93391ac2bb42413d8ece5c9ba076f502f0d6c29ea64.png" />
-<img alt="_images/e7eb9a5e6e92f3602e5a1f86177b7c51d65d042a656b1c5837827cac7ad5021b.png" src="_images/e7eb9a5e6e92f3602e5a1f86177b7c51d65d042a656b1c5837827cac7ad5021b.png" />
-<img alt="_images/b260ed79699c1c4102e52866dfd75184783fe01fe1985cdb9807ebda3a9858cc.png" src="_images/b260ed79699c1c4102e52866dfd75184783fe01fe1985cdb9807ebda3a9858cc.png" />
-<img alt="_images/41737a8ad5ca09138307e955383c2e1544fd360175f1301d462b231292e92843.png" src="_images/41737a8ad5ca09138307e955383c2e1544fd360175f1301d462b231292e92843.png" />
-<img alt="_images/00c9a6125d25253e612f0fdf42ec4d117aa9f628277e5df3523469a38e0c4035.png" src="_images/00c9a6125d25253e612f0fdf42ec4d117aa9f628277e5df3523469a38e0c4035.png" />
-<img alt="_images/e972856da382a07a72f896b7d33eb54a0b0838df764f8517a5ab7706d12653d3.png" src="_images/e972856da382a07a72f896b7d33eb54a0b0838df764f8517a5ab7706d12653d3.png" />
-<img alt="_images/18018facd9860603ba26182fecfdd2ab4259d0a2b6d535ce03fdf47512652a65.png" src="_images/18018facd9860603ba26182fecfdd2ab4259d0a2b6d535ce03fdf47512652a65.png" />
-<img alt="_images/eb9e5eb42000cf1ad595d65a229f6dd2b423d72c946aecdb74cc96d318076b0e.png" src="_images/eb9e5eb42000cf1ad595d65a229f6dd2b423d72c946aecdb74cc96d318076b0e.png" />
-<img alt="_images/4a71e9906abad3a162b79d34a4da544a2e8b3c1734359b8faa6f33abc858c6b2.png" src="_images/4a71e9906abad3a162b79d34a4da544a2e8b3c1734359b8faa6f33abc858c6b2.png" />
-<img alt="_images/e92a1948f2658fb51cc052f9a23626d4c8af71c213c6174f197c7549a5a7b192.png" src="_images/e92a1948f2658fb51cc052f9a23626d4c8af71c213c6174f197c7549a5a7b192.png" />
-<img alt="_images/bcb0651e20090f0e5cc3b8d22c97e215103150de7dda145e6a3038303985fa15.png" src="_images/bcb0651e20090f0e5cc3b8d22c97e215103150de7dda145e6a3038303985fa15.png" />
+<img alt="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" src="_images/ddc8f6279e1e1e84dff93dc439d1c3a05f16f7efe4afbab441cde659ce22c243.png" />
+<img alt="_images/4cf109adfc279e7f9fe23314ead1a66ce610f314f2c1762168c94aa6513064be.png" src="_images/4cf109adfc279e7f9fe23314ead1a66ce610f314f2c1762168c94aa6513064be.png" />
+<img alt="_images/504de17f8856669763ae75e96416051d69f6ebc6104a53765e807cb70dae7ca9.png" src="_images/504de17f8856669763ae75e96416051d69f6ebc6104a53765e807cb70dae7ca9.png" />
+<img alt="_images/08e7efd1f7dce031bc8528d29d74a91f163816af23beba923d1a1b33921a0988.png" src="_images/08e7efd1f7dce031bc8528d29d74a91f163816af23beba923d1a1b33921a0988.png" />
+<img alt="_images/ea3e016d2e67fe08796fb8ad45ad50985689640feec8feea166ed383b6df063c.png" src="_images/ea3e016d2e67fe08796fb8ad45ad50985689640feec8feea166ed383b6df063c.png" />
+<img alt="_images/7e3c84f6c4ffbb801fce6a51c5d03800ada67b4020f261a7c7150ddbfe1aec84.png" src="_images/7e3c84f6c4ffbb801fce6a51c5d03800ada67b4020f261a7c7150ddbfe1aec84.png" />
+<img alt="_images/1ea3880b9278f4fd02d33d213a9026a2958f46f27867dc5c0cb55b0c57aabc02.png" src="_images/1ea3880b9278f4fd02d33d213a9026a2958f46f27867dc5c0cb55b0c57aabc02.png" />
+<img alt="_images/eb1362dd116ce5ab48186c5080f30ad0517d1cc49690af6f1768c5dc5456f5ed.png" src="_images/eb1362dd116ce5ab48186c5080f30ad0517d1cc49690af6f1768c5dc5456f5ed.png" />
+<img alt="_images/82638c65ff0af365bff6636968b4ddadc2deaf507fbfed7281eb983ade1f4111.png" src="_images/82638c65ff0af365bff6636968b4ddadc2deaf507fbfed7281eb983ade1f4111.png" />
+<img alt="_images/b43dfab5ddda73127df6cf72605ba7756adda202c81fcfe6f239944fc8701e65.png" src="_images/b43dfab5ddda73127df6cf72605ba7756adda202c81fcfe6f239944fc8701e65.png" />
+<img alt="_images/021b1b23358f2d06b5e5bbfa95ff35783856ace689cd7fc4d1f0dd3b3f355e54.png" src="_images/021b1b23358f2d06b5e5bbfa95ff35783856ace689cd7fc4d1f0dd3b3f355e54.png" />
+<img alt="_images/189b9a35ace74d7c0175269e7f71278314753e580c0eeb78ca59b37022f89503.png" src="_images/189b9a35ace74d7c0175269e7f71278314753e580c0eeb78ca59b37022f89503.png" />
+<img alt="_images/a8aa1e8e024e6d9e8f0b21e25ecf8aa3fe7959b901d573e8e7e790a68d59fd61.png" src="_images/a8aa1e8e024e6d9e8f0b21e25ecf8aa3fe7959b901d573e8e7e790a68d59fd61.png" />
+<img alt="_images/02c590f46978808670ba2df9b2474cdc3388c0ef7e2eb7b0ecffd89587777e01.png" src="_images/02c590f46978808670ba2df9b2474cdc3388c0ef7e2eb7b0ecffd89587777e01.png" />
+<img alt="_images/ed700618183671552d29a398ffa961ef809b330f7d4ebeede32a201377db82b1.png" src="_images/ed700618183671552d29a398ffa961ef809b330f7d4ebeede32a201377db82b1.png" />
+<img alt="_images/b0295140dd90c12f7c49b814eed5156c88bbae16a082cbaf5697c517d7b95252.png" src="_images/b0295140dd90c12f7c49b814eed5156c88bbae16a082cbaf5697c517d7b95252.png" />
+<img alt="_images/13092611ef10171a7ef446bf9da84df302fc3e7993b31d3b97f547bdc3de0082.png" src="_images/13092611ef10171a7ef446bf9da84df302fc3e7993b31d3b97f547bdc3de0082.png" />
+<img alt="_images/2553ca2650518e3c47560813b57c6bfb8c3945247c62f54f1c194eed3ea0bf1c.png" src="_images/2553ca2650518e3c47560813b57c6bfb8c3945247c62f54f1c194eed3ea0bf1c.png" />
+<img alt="_images/00deff020b91c9b654e4287c3e077454680715c04a2481a612a76948e4f20b13.png" src="_images/00deff020b91c9b654e4287c3e077454680715c04a2481a612a76948e4f20b13.png" />
+<img alt="_images/38609a7e30d5362c56bf72d27a23bad18e6e7d66565c9747b1eb29122c1c9ccd.png" src="_images/38609a7e30d5362c56bf72d27a23bad18e6e7d66565c9747b1eb29122c1c9ccd.png" />
+<img alt="_images/7fe5ebade6a99a39a66b3c261ad1f99d8359d42f3cc724d03a13bc26b93bd841.png" src="_images/7fe5ebade6a99a39a66b3c261ad1f99d8359d42f3cc724d03a13bc26b93bd841.png" />
 </div>
 </div>
-<p>What do you observe about the evolution of the hat function under the nonlinear convection equation? What happens when you change the numerical parameters and run again?</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -512,6 +661,15 @@ document.write(`
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Step 1: 1-D Linear Convection</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="4.%20CFL%20condition.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step 3: Convergence and the CFL Condition</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
