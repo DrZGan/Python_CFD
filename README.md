@@ -1,5 +1,5 @@
 # Welcome to the Online Course: Computational Fluid Dynamics (CFD) with high-performance Python programming.
-
+# Website: https://drzgan.github.io/Python_CFD/intro.html
 This online course offers a comprehensive **20-step journey** through the world of Computational Fluid Dynamics (CFD), leveraging the power of Python's high-performance capabilities. It begins with an essential introduction to CFD's core principles, swiftly transitioning into hands-on Python programming to equip students for the practical components ahead. As the course progresses, participants will tackle a range of equations, including convection, diffusion, Burgers’, Laplace, Poisson, and eventually, the Navier-Stokes equation.
 
 A significant focus will be on mastering array operations with NumPy, crucial for understanding 2D equations and simulating cavity flow. We will employ various schemes such as the Navier-Stokes and Chorin's projection methods. Additionally, the course will cover the use of JAX, a cutting-edge Python tool for high-performance computing, enhancing our computational capabilities.
