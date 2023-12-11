@@ -934,42 +934,42 @@ v_{i,j}^{n+1} = v_{i,j}^{n} &amp; - u_{i,j}^{n} \frac{\Delta t}{\Delta x} \left(
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17843/2990769937.py:6: RuntimeWarning: overflow encountered in square
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19268/2990769937.py:6: RuntimeWarning: overflow encountered in square
   ((u[1:-1, 2:] - u[1:-1, 0:-2]) / (2 * dx))**2 -
-/tmp/ipykernel_17843/2990769937.py:7: RuntimeWarning: overflow encountered in multiply
+/tmp/ipykernel_19268/2990769937.py:7: RuntimeWarning: overflow encountered in multiply
   2 * ((u[2:, 1:-1] - u[0:-2, 1:-1]) / (2 * dy) *
-/tmp/ipykernel_17843/2990769937.py:7: RuntimeWarning: overflow encountered in divide
+/tmp/ipykernel_19268/2990769937.py:7: RuntimeWarning: overflow encountered in divide
   2 * ((u[2:, 1:-1] - u[0:-2, 1:-1]) / (2 * dy) *
-/tmp/ipykernel_17843/2990769937.py:3: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/2990769937.py:3: RuntimeWarning: invalid value encountered in subtract
   b[1:-1, 1:-1] = (rho * (1 / dt *
-/tmp/ipykernel_17843/2990769937.py:9: RuntimeWarning: overflow encountered in square
+/tmp/ipykernel_19268/2990769937.py:9: RuntimeWarning: overflow encountered in square
   ((v[2:, 1:-1] - v[0:-2, 1:-1]) / (2 * dy))**2))
-/tmp/ipykernel_17843/1422217961.py:4: RuntimeWarning: overflow encountered in multiply
+/tmp/ipykernel_19268/1422217961.py:4: RuntimeWarning: overflow encountered in multiply
   un[1:-1, 1:-1] * dt / dx *
-/tmp/ipykernel_17843/1422217961.py:6: RuntimeWarning: overflow encountered in multiply
+/tmp/ipykernel_19268/1422217961.py:6: RuntimeWarning: overflow encountered in multiply
   vn[1:-1, 1:-1] * dt / dy *
-/tmp/ipykernel_17843/1422217961.py:8: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:8: RuntimeWarning: invalid value encountered in subtract
   dt / (2 * rho * dx) * (p[1:-1, 2:] - p[1:-1, 0:-2]) +
-/tmp/ipykernel_17843/1422217961.py:18: RuntimeWarning: overflow encountered in multiply
+/tmp/ipykernel_19268/1422217961.py:18: RuntimeWarning: overflow encountered in multiply
   un[1:-1, 1:-1] * dt / dx *
-/tmp/ipykernel_17843/1422217961.py:20: RuntimeWarning: overflow encountered in multiply
+/tmp/ipykernel_19268/1422217961.py:20: RuntimeWarning: overflow encountered in multiply
   vn[1:-1, 1:-1] * dt / dy *
-/tmp/ipykernel_17843/1422217961.py:17: RuntimeWarning: overflow encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:17: RuntimeWarning: overflow encountered in subtract
   v[1:-1,1:-1] = (vn[1:-1, 1:-1] -
-/tmp/ipykernel_17843/1422217961.py:17: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:17: RuntimeWarning: invalid value encountered in subtract
   v[1:-1,1:-1] = (vn[1:-1, 1:-1] -
-/tmp/ipykernel_17843/1422217961.py:22: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:22: RuntimeWarning: invalid value encountered in subtract
   dt / (2 * rho * dy) * (p[2:, 1:-1] - p[0:-2, 1:-1]) +
-/tmp/ipykernel_17843/1422217961.py:19: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:19: RuntimeWarning: invalid value encountered in subtract
   (vn[1:-1, 1:-1] - vn[1:-1, 0:-2]) -
-/tmp/ipykernel_17843/1422217961.py:24: RuntimeWarning: invalid value encountered in subtract
+/tmp/ipykernel_19268/1422217961.py:24: RuntimeWarning: invalid value encountered in subtract
   (vn[1:-1, 2:] - 2 * vn[1:-1, 1:-1] + vn[1:-1, 0:-2]) +
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>l1norm_u =  nan l1norm_v =  nan l1norm_p =  nan
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17843/2565152488.py:12: UserWarning: No contour levels were found within the data range.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_19268/2565152488.py:12: UserWarning: No contour levels were found within the data range.
   contour = plt.contour(X, Y, p, cmap=&#39;turbo&#39;, levels=10)
 </pre></div>
 </div>
