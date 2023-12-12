@@ -21,7 +21,7 @@ myarray = linspace(0, 5, 10)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_20502/2687275794.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_21991/2687275794.py[0m in [0;36m<module>[0;34m[0m
 [0;32m----> 1[0;31m [0mmyarray[0m [0;34m=[0m [0mlinspace[0m[0;34m([0m[0;36m0[0m[0;34m,[0m [0;36m5[0m[0;34m,[0m [0;36m10[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m
 [0;31mNameError[0m: name 'linspace' is not defined

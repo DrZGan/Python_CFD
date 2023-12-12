@@ -543,7 +543,7 @@ using a truncated Fourier-Galerkin expansion.</p>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;mpl_toolkits.mplot3d.art3d.Line3D at 0x7fb3bc775060&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;mpl_toolkits.mplot3d.art3d.Line3D at 0x7f65987b5240&gt;]
 </pre></div>
 </div>
 <img alt="_images/70da7a83e3b0dd48138d7204788c6ffd3bfb9ff59822007ec2ca356e92b5d880.png" src="_images/70da7a83e3b0dd48138d7204788c6ffd3bfb9ff59822007ec2ca356e92b5d880.png" />
@@ -684,7 +684,7 @@ running autodiff, differentiate through loops
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.24 ms ± 87 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.18 ms ± 16.7 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 [2.50000000e-01 1.96611933e-01 1.04993585e-01 4.51766597e-02
  1.76627062e-02 6.64805667e-03 2.46650929e-03 9.10221180e-04
  3.35237671e-04 1.23379350e-04 4.53958077e-05 1.67011429e-05
@@ -727,7 +727,7 @@ running autodiff, differentiate through loops
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12.1 ms ± 265 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12.1 ms ± 229 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
 [2.49999999e-01 1.96611936e-01 1.04993582e-01 4.51766624e-02
  1.76626997e-02 6.64805810e-03 2.46650700e-03 9.10219455e-04
  3.35241168e-04 1.23378641e-04 4.53965754e-05 1.66977543e-05
@@ -874,13 +874,13 @@ grads = [Array(-0.00014405, dtype=float64), Array(0.00261211, dtype=float64), Ar
 ########################################################
 
 ######################### Evaluating objective value - step 3
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>obj_val = 4.3328425968302456e-05
+obj_val = 4.3328425968302456e-05
 ode_params = [Array(28.01976363, dtype=float64), Array(10.01664552, dtype=float64), Array(2.66666667, dtype=float64)]
 ys[-1] = [-9.37537389 -8.36062631 29.36688514]
 running finite difference
-########################################################
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
 grads = [Array(0.00207508, dtype=float64), Array(5.73364305e-05, dtype=float64), Array(-0.53331802, dtype=float64)]
 ########################################################
 
@@ -907,9 +907,7 @@ obj_val = 2.2305330989485424e-05
 ode_params = [Array(28.01328149, dtype=float64), Array(10.01327813, dtype=float64), Array(2.66666667, dtype=float64)]
 ys[-1] = [-9.37677993 -8.36064907 29.36486189]
 running finite difference
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
+########################################################
 grads = [Array(-0.00062246, dtype=float64), Array(0.00158433, dtype=float64), Array(-0.55303034, dtype=float64)]
 ########################################################
 
@@ -918,7 +916,9 @@ obj_val = 1.3800534692919301e-05
 ode_params = [Array(28.01067905, dtype=float64), Array(10.01033877, dtype=float64), Array(2.66666667, dtype=float64)]
 ys[-1] = [-9.37707385 -8.35974055 29.36446013]
 running finite difference
-########################################################
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>########################################################
 grads = [Array(-0.00061286, dtype=float64), Array(0.0008233, dtype=float64), Array(-0.55015333, dtype=float64)]
 ########################################################
 Optimization terminated successfully    (Exit mode 0)
